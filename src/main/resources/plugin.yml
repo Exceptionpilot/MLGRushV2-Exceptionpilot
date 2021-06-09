@@ -1,0 +1,8 @@
+name: MLGRush
+version: 1.0
+author: Exceptionpilot
+main: net.exceptionpilot.mlgrush.MLGRush
+
+commands:
+  setup:
+  quit:
