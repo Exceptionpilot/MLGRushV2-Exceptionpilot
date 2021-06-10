@@ -5,9 +5,11 @@ import net.exceptionpilot.mlgrush.commands.*;
 import net.exceptionpilot.mlgrush.listener.*;
 import net.exceptionpilot.mlgrush.location.LocationHandler;
 import net.exceptionpilot.mlgrush.location.MapLocations;
+import net.exceptionpilot.mlgrush.location.types.Locations;
 import net.exceptionpilot.mlgrush.manager.MapManager;
 import net.exceptionpilot.mlgrush.manager.SetupManager;
 import net.exceptionpilot.mlgrush.manager.StatsWallManager;
+import net.exceptionpilot.mlgrush.player.RushPlayer;
 import net.exceptionpilot.mlgrush.score.ScoreboardManager;
 import net.exceptionpilot.mlgrush.sql.MySQL;
 import net.exceptionpilot.mlgrush.sql.config.SQLConfig;
@@ -79,7 +81,7 @@ public class MLGRush extends JavaPlugin {
 
         statsWallManager = new StatsWallManager();
 
-        this.kick();
+        this.rl();
         this.intListeners();
         this.intCommands();
         this.intWorlds();
@@ -112,10 +114,15 @@ public class MLGRush extends JavaPlugin {
         }
     }
 
-    private void kick() {
+    private void rl() {
         try {
             Bukkit.getOnlinePlayers().forEach(all -> {
-                all.kickPlayer(prefix + "§cDer Server wurde reloadet!");
+                RushPlayer current = RushPlayer.getPlayer(all);
+                current.setLobby(true);
+                current.teleport(Locations.SPAWN);
+                current.setScoreboard();
+                current.setLobbyItems();
+                all.kickPlayer(prefix + "§cDer Server wurde neugestartet!");
             });
         } catch (Exception exception) {
             exception.printStackTrace();

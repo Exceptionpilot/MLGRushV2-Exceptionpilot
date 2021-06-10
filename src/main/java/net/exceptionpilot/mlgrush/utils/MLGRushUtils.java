@@ -6,6 +6,7 @@ import net.exceptionpilot.mlgrush.builder.ItemBuilder;
 import net.exceptionpilot.mlgrush.location.types.Locations;
 import net.exceptionpilot.mlgrush.player.RushPlayer;
 import net.exceptionpilot.mlgrush.sql.user.SQLPlayer;
+import net.exceptionpilot.mlgrush.sql.user.SQLStats;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
@@ -204,7 +205,7 @@ public class MLGRushUtils {
 
         rushPlayer.add("LOSES");
         rushPlayer1.add("WINS");
-        rushPlayer1.add("POINTS");
+        new SQLStats(rushPlayer1.getPlayer().getName()).add("POINTS", true);
 
         MLGRush.getInstance().getGameUtils().getLastHitter().remove(rushPlayer.getPlayer());
         MLGRush.getInstance().getGameUtils().getLastHitter().remove(rushPlayer1.getPlayer());
@@ -282,8 +283,8 @@ public class MLGRushUtils {
             getRequests().remove(player.getPlayer());
         }
         Bukkit.getOnlinePlayers().forEach(all -> {
-            if(matching.containsKey(all)) {
-                if(matching.get(all).equalsIgnoreCase(player.getName())) {
+            if (matching.containsKey(all)) {
+                if (matching.get(all).equalsIgnoreCase(player.getName())) {
                     getRequests().remove(all);
                     matching.remove(all);
                     RushPlayer allRush = RushPlayer.getPlayer(all);

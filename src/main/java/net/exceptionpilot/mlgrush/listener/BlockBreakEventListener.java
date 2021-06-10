@@ -2,6 +2,7 @@ package net.exceptionpilot.mlgrush.listener;
 
 import net.exceptionpilot.mlgrush.MLGRush;
 import net.exceptionpilot.mlgrush.player.RushPlayer;
+import net.exceptionpilot.mlgrush.sql.user.SQLStats;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

@@ -27,17 +27,17 @@ public class PlayerInteractEventListener implements Listener {
         if(event.getItem().getItemMeta() == null) return;
         if(event.getItem().getItemMeta().getDisplayName() == null) return;
         if(rushPlayer.isLobby() && !rushPlayer.isBuildMode()) {
-            if(event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().getItemNames().get("leave"))) {
+            if (event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().getItemNames().get("leave"))) {
                 rushPlayer.getPlayer().kickPlayer(MLGRush.getInstance().getPrefix() + "§7Du hast MLGRush §cverlassen!");
             }
-            if(event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().getItemNames().get("settings"))) {
+            if (event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().getItemNames().get("settings"))) {
                 Inventory inventory = Bukkit.createInventory(null, 9 * 4, MLGRush.getInstance().getStringUtils().getInventoryName().get("sort"));
 
-                for(int i = 0; i < 9; i++) {
+                for (int i = 0; i < 9; i++) {
                     inventory.setItem(i, new ItemBuilder(Material.STAINED_GLASS_PANE, (short) 15).setDisplayName("§7").build());
                 }
 
-                for(int i = 18; i < 36; i++) {
+                for (int i = 18; i < 36; i++) {
                     inventory.setItem(i, new ItemBuilder(Material.STAINED_GLASS_PANE, (short) 15).setDisplayName("§7").build());
                 }
 
@@ -62,12 +62,6 @@ public class PlayerInteractEventListener implements Listener {
                 );
 
                 rushPlayer.getPlayer().openInventory(inventory);
-            }
-        } else if(rushPlayer.isIngame()) {
-            if(event.getClickedBlock() == null) return;
-            if(event.getClickedBlock().getType() == null) return;
-            if(event.getClickedBlock().getType() == Material.BED_BLOCK) {
-                event.setCancelled(true);
             }
         }
     }

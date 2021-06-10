@@ -36,13 +36,13 @@ public class AsyncPlayerChatEventListener implements Listener {
             }
             if(i == 7) {
                 if(event.getMessage().equalsIgnoreCase("fertig")) {
-                    MLGRush.getInstance().getMapLocations().setLocation("high." + MLGRush.getInstance().getSetupManager().getMap(), event.getPlayer().getLocation());
+                    MLGRush.getInstance().getMapLocations().setLocation("low." + MLGRush.getInstance().getSetupManager().getMap(), event.getPlayer().getLocation());
                     MLGRush.getInstance().getSetupManager().push(event.getPlayer());
                 }
             }
             if(i == 8) {
                 if(event.getMessage().equalsIgnoreCase("fertig")) {
-                    MLGRush.getInstance().getMapLocations().setLocation("low." + MLGRush.getInstance().getSetupManager().getMap(), event.getPlayer().getLocation());
+                    MLGRush.getInstance().getMapLocations().setLocation("high." + MLGRush.getInstance().getSetupManager().getMap(), event.getPlayer().getLocation());
                     MLGRush.getInstance().getSetupManager().push(event.getPlayer());
                 }
             }

@@ -60,6 +60,15 @@ public class SQLStats {
     }
 
     @SneakyThrows
+    public void add(String type, boolean win) {
+        int before = getFormStats(type);
+        PreparedStatement preparedStatement = MLGRush.getInstance().getMySQL().getPreparedStatement("UPDATE mlgrush_players_stats SET " + type + "=? WHERE NAME=?");
+        preparedStatement.setInt(1, before + 10);
+        preparedStatement.setString(2, name);
+        preparedStatement.executeUpdate();
+    }
+
+    @SneakyThrows
     public List<String> getAllPlayers() {
         List<String> players = new ArrayList<>();
         PreparedStatement preparedStatement = MLGRush.getInstance().getMySQL().getPreparedStatement("SELECT * FROM mlgrush_players_stats ORDER BY POINTS DESC");
