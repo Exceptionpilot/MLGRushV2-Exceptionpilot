@@ -103,6 +103,7 @@ public class BlockBreakEventListener implements Listener {
                 event.setCancelled(true);
             } else if(MLGRush.getInstance().getBlockUtils().blockHashMap.get(rushPlayer.getMap()).contains(event.getBlock())){
                 event.setCancelled(false);
+                event.getBlock().setType(Material.AIR);
             } else {
                 event.setCancelled(true);
             }
