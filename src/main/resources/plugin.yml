@@ -6,3 +6,5 @@ main: net.exceptionpilot.mlgrush.MLGRush
 commands:
   setup:
   quit:
+  build:
+  spec:

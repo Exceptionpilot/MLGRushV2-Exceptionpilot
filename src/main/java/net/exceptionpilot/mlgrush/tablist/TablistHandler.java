@@ -1,6 +1,9 @@
 package net.exceptionpilot.mlgrush.tablist;
 
+import net.exceptionpilot.mlgrush.MLGRush;
+import net.exceptionpilot.mlgrush.player.RushPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
 /**
@@ -20,15 +23,12 @@ public class TablistHandler {
             scoreboard.registerNewTeam("010Spieler");
         }
         scoreboard.getTeam("010Spieler").setPrefix("§7");
+    }
 
-        if(scoreboard.getTeam("001Rot") == null) {
-            scoreboard.registerNewTeam("001Rot");
-        }
-        scoreboard.getTeam("001Rot").setPrefix("§c⬛ §8× ");
-
-        if(scoreboard.getTeam("002Blau") == null) {
-            scoreboard.registerNewTeam("002Blau");
-        }
-        scoreboard.getTeam("002Blau").setPrefix("§9⬛ §8× ");
+    public void intIngameTablist(Player player) {
+        scoreboard.getTeam("010Spieler").addPlayer(player);
+        Bukkit.getOnlinePlayers().forEach(all -> {
+            all.setScoreboard(scoreboard);
+        });
     }
 }

@@ -23,6 +23,7 @@ public class PlayerMoveEventListener implements Listener {
         RushPlayer rushPlayer = RushPlayer.getPlayer(event.getPlayer());
         if(rushPlayer.isIngame()) {
             if(rushPlayer.getPlayer().getLocation().getY() <= MLGRush.getInstance().getMapLocations().getLocation("low." + rushPlayer.getMap()).getY()) {
+                MLGRush.getInstance().getQueueUtils().addPotions(rushPlayer.getPlayer());
                 rushPlayer.teleportToIngameSpawn();
             }
         }

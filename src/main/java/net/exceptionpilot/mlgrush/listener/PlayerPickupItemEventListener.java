@@ -1,5 +1,6 @@
 package net.exceptionpilot.mlgrush.listener;
 
+import net.exceptionpilot.mlgrush.player.RushPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -14,6 +15,11 @@ public class PlayerPickupItemEventListener implements Listener {
 
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        event.setCancelled(true);
+        RushPlayer rushPlayer = RushPlayer.getPlayer(event.getPlayer());
+        if(rushPlayer.isIngame()) {
+            event.setCancelled(false);
+        } else if(!rushPlayer.isBuildMode()) {
+            event.setCancelled(true);
+        }
     }
 }

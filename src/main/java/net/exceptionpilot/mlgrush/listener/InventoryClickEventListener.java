@@ -35,8 +35,8 @@ public class InventoryClickEventListener implements Listener {
                 }
                 if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§8» §cAbbrechen")) {
                     rushPlayer.getPlayer().closeInventory();
-                    rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§7Du hast den Vorgang §aerfolgreich §7abgebrochen!");
-                    rushPlayer.getPlayer().playSound(rushPlayer.getPlayer().getLocation(), Sound.LEVEL_UP, 20, 20);
+                    rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§7Du hast den Vorgang §cabgebrochen!");
+                    rushPlayer.getPlayer().playSound(rushPlayer.getPlayer().getLocation(), Sound.BURP, 20, 20);
                 }
                 if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§8» §aSpeichern")) {
                     Inventory inventory = event.getClickedInventory();
@@ -57,6 +57,8 @@ public class InventoryClickEventListener implements Listener {
                         rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cEs ist ein Fehler aufgetreten!");
                     }
                 }
+            } else if(rushPlayer.isBuildMode()){
+                event.setCancelled(false);
             } else {
                 event.setCancelled(true);
             }

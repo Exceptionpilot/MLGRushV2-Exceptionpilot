@@ -1,8 +1,10 @@
 package net.exceptionpilot.mlgrush;
 
 import lombok.Getter;
+import net.exceptionpilot.mlgrush.commands.BuildCommand;
 import net.exceptionpilot.mlgrush.commands.QuitCommand;
 import net.exceptionpilot.mlgrush.commands.SetupCommand;
+import net.exceptionpilot.mlgrush.commands.SpecCommand;
 import net.exceptionpilot.mlgrush.listener.*;
 import net.exceptionpilot.mlgrush.location.LocationHandler;
 import net.exceptionpilot.mlgrush.location.MapLocations;
@@ -82,6 +84,7 @@ public class MLGRush extends JavaPlugin {
     @Override
     public void onDisable() {
         queueUtils.kill();
+        blockUtils.debugClear();
         if(mySQL.isConnected()) {
             mySQL.close();
         }
@@ -90,6 +93,8 @@ public class MLGRush extends JavaPlugin {
     private void intCommands() {
         this.getCommand("setup").setExecutor(new SetupCommand());
         this.getCommand("quit").setExecutor(new QuitCommand());
+        this.getCommand("build").setExecutor(new BuildCommand());
+        this.getCommand("spec").setExecutor(new SpecCommand());
     }
 
     private void intWorlds() {
@@ -129,5 +134,6 @@ public class MLGRush extends JavaPlugin {
         pluginManager.registerEvents(new PlayerPickupItemEventListener(), this);
         pluginManager.registerEvents(new InventoryCloseEventListener(), this);
         pluginManager.registerEvents(new PlayerBedEnterEventListener(), this);
+        pluginManager.registerEvents(new PlayerAchievementAwardedEventListener(), this);
     }
 }

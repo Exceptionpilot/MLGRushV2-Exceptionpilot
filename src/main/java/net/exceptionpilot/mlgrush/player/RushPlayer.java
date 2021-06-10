@@ -53,6 +53,7 @@ public class RushPlayer {
             player.setExp(0);
             player.setGameMode(GameMode.SURVIVAL);
             MLGRush.getInstance().getGameUtils().getLobbyList().remove(player);
+            MLGRush.getInstance().getGameUtils().getBuildMode().remove(player);
             return;
         }
         MLGRush.getInstance().getGameUtils().getIngameList().remove(player);
@@ -81,11 +82,97 @@ public class RushPlayer {
         );
     }
 
+    public boolean isBuildMode() {
+        return MLGRush.getInstance().getGameUtils().getBuildMode().contains(player);
+    }
+
+    public boolean isSpec() {
+        return MLGRush.getInstance().getGameUtils().getSpecList().contains(player);
+    }
+
+    public void removeFormPlayersScoreboard() {
+
+        MLGRush.getInstance().getQueueUtils().reset(player);
+
+        MLGRush.getInstance().getQueueUtils().getRequests().remove(this.getPlayer());
+
+        MLGRush.getInstance().getQueueUtils().getMatch().remove(this.getPlayer());
+
+        MLGRush.getInstance().getQueueUtils().getMatching().remove(this.getPlayer());
+
+        MLGRush.getInstance().getQueueUtils().getMapList().remove(this.getPlayer());
+
+        MLGRush.getInstance().getQueueUtils().getInMatching().remove(this.getPlayer());
+
+        MLGRush.getInstance().getQueueUtils().getQueueList().remove(this.getPlayer());
+    }
+
+    public void setSpec(boolean spec) {
+        if(spec) {
+            MLGRush.getInstance().getGameUtils().getBuildMode().remove(player);
+            MLGRush.getInstance().getGameUtils().getSpecList().add(player);
+            player.setGameMode(GameMode.CREATIVE);
+            player.getInventory().clear();
+            forEachReloadSpec();
+            removeFormPlayersScoreboard();
+            setScoreboard();
+            return;
+        }
+        MLGRush.getInstance().getGameUtils().getSpecList().remove(player);
+        player.setGameMode(GameMode.SURVIVAL);
+        player.getInventory().clear();
+        setLobbyItems();
+        forEachReloadSpec();
+        teleport(Locations.SPAWN);
+        setScoreboard();
+    }
+
+    public void forEachReloadSpec() {
+        Bukkit.getOnlinePlayers().forEach(all -> {
+            setSpecReload(all);
+        });
+    }
+
+    public void setSpecReload(Player player) {
+        Bukkit.getOnlinePlayers().forEach(all -> {
+            if(MLGRush.getInstance().getGameUtils().getSpecList().contains(all)) {
+                player.hidePlayer(all);
+            } else {
+                player.showPlayer(all);
+            }
+        });
+    }
+
+    public void setBuildMode(boolean build) {
+        if(build) {
+            player.setGameMode(GameMode.CREATIVE);
+            player.getInventory().clear();
+            player.setLevel(0);
+            player.setExp(0);
+            MLGRush.getInstance().getGameUtils().getSpecList().remove(player);
+            MLGRush.getInstance().getGameUtils().getBuildMode().add(player);
+            removeFormPlayersScoreboard();
+            setScoreboard();
+            forEachReloadSpec();
+            return;
+        }
+        player.getInventory().clear();
+        setLobbyItems();
+        player.setGameMode(GameMode.SURVIVAL);
+        teleport(Locations.SPAWN);
+        MLGRush.getInstance().getGameUtils().getBuildMode().remove(player);
+        setLobbyItems();
+        setScoreboard();
+    }
+
     public void reloadVisibility(Player visibility) {
         RushPlayer v  = new RushPlayer(visibility);
         if(v.isLobby()) {
             Bukkit.getOnlinePlayers().forEach(all -> {
                 RushPlayer current = RushPlayer.getPlayer(all);
+                if(current.isSpec()) {
+                    visibility.hidePlayer(all);
+                }
                 if(current.isLobby()) {
                     visibility.showPlayer(all);
                 } else {

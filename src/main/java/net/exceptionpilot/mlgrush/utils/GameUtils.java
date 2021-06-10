@@ -24,4 +24,6 @@ public class GameUtils {
     private HashMap<Player, String> mapList = new HashMap<>();
     private HashMap<Player, String> teamList = new HashMap<>();
     private HashMap<Player, Integer> points = new HashMap<>();
+    private ArrayList<Player> buildMode = new ArrayList<>();
+    private ArrayList<Player> specList = new ArrayList<>();
 }

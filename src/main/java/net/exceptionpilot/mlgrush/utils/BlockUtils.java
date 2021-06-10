@@ -39,4 +39,10 @@ public class BlockUtils {
         }
         blockHashMap.get(map).add(block);
     }
+
+    public void debugClear() {
+        for(String s : blockHashMap.keySet()) {
+            clearBlocks(s);
+        }
+    }
 }

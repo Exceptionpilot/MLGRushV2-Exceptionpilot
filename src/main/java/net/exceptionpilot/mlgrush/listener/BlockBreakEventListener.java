@@ -38,6 +38,7 @@ public class BlockBreakEventListener implements Listener {
                 MLGRush.getInstance().getSetupManager().push(event.getPlayer());
             }
             event.setCancelled(true);
+            return;
         }
         RushPlayer rushPlayer = RushPlayer.getPlayer(event.getPlayer());
         if(rushPlayer.isIngame()) {
@@ -46,6 +47,7 @@ public class BlockBreakEventListener implements Listener {
                 if(location.equals(MLGRush.getInstance().getMapLocations().getLocation("bed.rot.oben." + rushPlayer.getMap()))) {
                     if(!rushPlayer.getTeam().equalsIgnoreCase("rot")) {
                         MLGRush.getInstance().getQueueUtils().addPoint(rushPlayer.getPlayer());
+                        MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
                     } else {
                         rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cDu darfst dein eigenes Bett nicht abbauen!");
                     }
@@ -53,6 +55,7 @@ public class BlockBreakEventListener implements Listener {
                 if(location.equals(MLGRush.getInstance().getMapLocations().getLocation("bed.rot.unten." + rushPlayer.getMap()))) {
                     if(!rushPlayer.getTeam().equalsIgnoreCase("rot")) {
                         MLGRush.getInstance().getQueueUtils().addPoint(rushPlayer.getPlayer());
+                        MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
                     } else {
                         rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cDu darfst dein eigenes Bett nicht abbauen!");
                     }
@@ -60,6 +63,7 @@ public class BlockBreakEventListener implements Listener {
                 if(location.equals(MLGRush.getInstance().getMapLocations().getLocation("bed.blau.oben." + rushPlayer.getMap()))) {
                     if(!rushPlayer.getTeam().equalsIgnoreCase("blau")) {
                         MLGRush.getInstance().getQueueUtils().addPoint(rushPlayer.getPlayer());
+                        MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
                     } else {
                         rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cDu darfst dein eigenes Bett nicht abbauen!");
                     }
@@ -67,14 +71,19 @@ public class BlockBreakEventListener implements Listener {
                 if(location.equals(MLGRush.getInstance().getMapLocations().getLocation("bed.blau.unten." + rushPlayer.getMap()))) {
                     if(!rushPlayer.getTeam().equalsIgnoreCase("blau")) {
                         MLGRush.getInstance().getQueueUtils().addPoint(rushPlayer.getPlayer());
+                        MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
                     } else {
                         rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cDu darfst dein eigenes Bett nicht abbauen!");
                     }
                 }
                 event.setCancelled(true);
+            } else if(MLGRush.getInstance().getBlockUtils().blockHashMap.get(rushPlayer.getMap()).contains(event.getBlock())){
+                event.setCancelled(false);
             } else {
                 event.setCancelled(true);
             }
+        } else if(rushPlayer.isBuildMode()) {
+            event.setCancelled(false);
         } else {
             event.setCancelled(true);
         }

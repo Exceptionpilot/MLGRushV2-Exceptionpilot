@@ -23,6 +23,10 @@ public class BlockPlaceEventListener implements Listener {
             } else {
                 event.setCancelled(true);
             }
+        } else if(rushPlayer.isBuildMode()) {
+            event.setCancelled(false);
+        } else {
+            event.setCancelled(true);
         }
     }
 }

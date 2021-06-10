@@ -79,9 +79,7 @@ public class MLGRushUtils {
                 startMatch(player, matcher);
             }
         }
-        Bukkit.getOnlinePlayers().forEach(all -> {
-            rushPlayer.reloadVisibility(all);
-        });
+        rushPlayer.forEachReloadSpec();
     }
 
     public void addPoint(Player player) {
@@ -90,27 +88,30 @@ public class MLGRushUtils {
         MLGRush.getInstance().getGameUtils().getPoints().remove(player);
         MLGRush.getInstance().getGameUtils().getPoints().put(player, i);
         RushPlayer rushPlayer = RushPlayer.getPlayer(player);
-        rushPlayer.teleportToIngameSpawn();
 
         RushPlayer rushPlayer1 = RushPlayer.getPlayer(match.get(rushPlayer.getPlayer()));
 
+        rushPlayer.teleportToIngameSpawn();
         rushPlayer1.teleportToIngameSpawn();
 
-        rushPlayer.getPlayer().getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 1, 255));
-        rushPlayer.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 1, 250));
-        rushPlayer.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 1, 255));
-        rushPlayer1.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 1, 255));
-        rushPlayer1.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 1, 255));
-        rushPlayer1.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 1, 250));
+        addPotions(player);
+        addPotions(rushPlayer1.getPlayer());
+
         playLoseSound(rushPlayer1.getPlayer());
         playWinSound(rushPlayer.getPlayer());
 
         rushPlayer.setScoreboard();
         rushPlayer1.setScoreboard();
 
-        Bukkit.getOnlinePlayers().forEach(all -> {
-            rushPlayer.reloadVisibility(all);
-        });
+        rushPlayer.forEachReloadSpec();
+        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
+        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer1.getPlayer());
+    }
+
+    public void addPotions(Player player) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10, 255));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 10, 250));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 1, 250));
     }
 
     public void playWinSound(Player player) {
@@ -152,9 +153,6 @@ public class MLGRushUtils {
         rushPlayer.setMap(map);
         player2.setMap(map);
 
-        rushPlayer.teleportToIngameSpawn();
-        player2.teleportToIngameSpawn();
-
         MLGRush.getInstance().getGameUtils().getPoints().put(player, 0);
         MLGRush.getInstance().getGameUtils().getPoints().put(player2.getPlayer(), 0);
         MLGRush.getInstance().getGameUtils().getPoints().put(rushPlayer.getPlayer(), 0);
@@ -164,12 +162,19 @@ public class MLGRushUtils {
         player2.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 1, 255));
         player2.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 1, 250));
 
+        MLGRush.getInstance().getTablistHandler().intIngameTablist(player);
+
         rushPlayer.setScoreboard();
         player2.setScoreboard();
 
-        Bukkit.getOnlinePlayers().forEach(all -> {
-            rushPlayer.reloadVisibility(all);
-        });
+        rushPlayer.forEachReloadSpec();
+        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
+        MLGRush.getInstance().getTablistHandler().intIngameTablist(player2.getPlayer());
+
+        Bukkit.getScheduler().runTaskLater(MLGRush.getInstance(), () -> {
+            rushPlayer.teleportToIngameSpawn();
+            player2.teleportToIngameSpawn();
+        }, 2L);
     }
 
     public void leaveMatch(RushPlayer rushPlayer) {
@@ -217,12 +222,21 @@ public class MLGRushUtils {
         rushPlayer1.setScoreboard();
         rushPlayer.setScoreboard();
 
-        Bukkit.getOnlinePlayers().forEach(all -> {
-            rushPlayer.reloadVisibility(all);
-        });
+        rushPlayer.forEachReloadSpec();
+        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
+        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer1.getPlayer());
     }
 
     public void handleQueue(RushPlayer rushPlayer) {
+        if(rushPlayer.isSpec() || rushPlayer.isBuildMode()) {
+            return;
+        }
+        if(rushPlayer.getPlayer().getItemInHand() == null) return;
+        if(rushPlayer.getPlayer().getItemInHand().getItemMeta() == null) return;
+        if(rushPlayer.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null) return;
+        if(!rushPlayer.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().itemNames.get("sword"))) {
+            return;
+        }
         if (rushPlayer.isInColdown()) {
             rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cBitte warte bevor du diese Aktion erneut ausführst");
             return;
@@ -245,9 +259,7 @@ public class MLGRushUtils {
             rushPlayer.setScoreboard();
         }
 
-        Bukkit.getOnlinePlayers().forEach(all -> {
-            rushPlayer.reloadVisibility(all);
-        });
+        rushPlayer.forEachReloadSpec();
     }
 
     public void reset(Player player) {

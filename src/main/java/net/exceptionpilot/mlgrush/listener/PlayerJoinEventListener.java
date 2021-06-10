@@ -1,5 +1,6 @@
 package net.exceptionpilot.mlgrush.listener;
 
+import net.exceptionpilot.mlgrush.MLGRush;
 import net.exceptionpilot.mlgrush.location.types.Locations;
 import net.exceptionpilot.mlgrush.player.RushPlayer;
 import net.exceptionpilot.mlgrush.sql.user.SQLPlayer;
@@ -25,8 +26,7 @@ public class PlayerJoinEventListener implements Listener {
         rushPlayer.teleport(Locations.SPAWN);
         rushPlayer.setLobbyItems();
         rushPlayer.setScoreboard();
-        Bukkit.getOnlinePlayers().forEach(all -> {
-            rushPlayer.reloadVisibility(all);
-        });
+        rushPlayer.forEachReloadSpec();
+        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
     }
 }

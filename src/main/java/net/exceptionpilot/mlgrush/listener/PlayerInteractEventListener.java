@@ -26,7 +26,7 @@ public class PlayerInteractEventListener implements Listener {
         if(event.getItem() == null) return;
         if(event.getItem().getItemMeta() == null) return;
         if(event.getItem().getItemMeta().getDisplayName() == null) return;
-        if(rushPlayer.isLobby()) {
+        if(rushPlayer.isLobby() && !rushPlayer.isBuildMode()) {
             if(event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().getItemNames().get("leave"))) {
                 rushPlayer.getPlayer().kickPlayer(MLGRush.getInstance().getPrefix() + "§7Du hast MLGRush §cverlassen!");
             }
