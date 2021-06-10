@@ -1,6 +1,7 @@
 package net.exceptionpilot.mlgrush.listener;
 
 import net.exceptionpilot.mlgrush.MLGRush;
+import net.exceptionpilot.mlgrush.location.types.Locations;
 import net.exceptionpilot.mlgrush.player.RushPlayer;
 import net.exceptionpilot.mlgrush.sql.user.SQLStats;
 import org.bukkit.Sound;
@@ -38,6 +39,11 @@ public class PlayerMoveEventListener implements Listener {
                     sqlStats.add("POINTS");
                     MLGRush.getInstance().getGameUtils().getLastHitter().remove(rushPlayer.getPlayer(), MLGRush.getInstance().getGameUtils().getLastHitter().get(rushPlayer.getPlayer()));
                 }
+            }
+        }
+        if(rushPlayer.isLobby()) {
+            if(event.getPlayer().getLocation().getY() <= 0) {
+                rushPlayer.teleport(Locations.SPAWN);
             }
         }
     }

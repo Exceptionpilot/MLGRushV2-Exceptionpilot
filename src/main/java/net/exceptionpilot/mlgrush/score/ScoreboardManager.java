@@ -50,10 +50,10 @@ public class ScoreboardManager {
             bPlayerBoard.getLines().clear();
             bPlayerBoard.set("§1", 9);
             bPlayerBoard.set("§7Ausgehend", 8);
-            bPlayerBoard.set("§8● §1§e" + (MLGRush.getInstance().getMlgrushUtils().getMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getMlgrushUtils().getMatching().get(rushPlayer.getPlayer()) : "[-/-]"), 7);
+            bPlayerBoard.set("§8● §1§e" + (MLGRush.getInstance().getMlgrushUtils().getMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getMlgrushUtils().getMatching().get(rushPlayer.getPlayer()) : "§c✘"), 7);
             bPlayerBoard.set("§2", 6);
             bPlayerBoard.set("§7Eingehend", 5);
-            bPlayerBoard.set("§8● §2§e" + (MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) : "[-/-]"), 4);
+            bPlayerBoard.set("§8● §2§e" + (MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) : "§c✘"), 4);
             bPlayerBoard.set("§9", 3);
             bPlayerBoard.set("§7Teamspeak", 2);
             bPlayerBoard.set("§8● §eSpigotFork.eu", 1);
