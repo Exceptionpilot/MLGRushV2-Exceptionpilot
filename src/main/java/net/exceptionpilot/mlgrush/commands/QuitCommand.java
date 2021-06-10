@@ -23,7 +23,7 @@ public class QuitCommand implements CommandExecutor {
         Player player = (Player) sender;
         RushPlayer rushPlayer = RushPlayer.getPlayer(player);
         if(rushPlayer.isIngame()) {
-            MLGRush.getInstance().getQueueUtils().leaveMatch(rushPlayer);
+            MLGRush.getInstance().getMlgrushUtils().leaveMatch(rushPlayer);
         }
         return true;
     }

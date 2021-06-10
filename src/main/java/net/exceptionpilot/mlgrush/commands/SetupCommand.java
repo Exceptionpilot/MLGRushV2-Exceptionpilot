@@ -61,7 +61,7 @@ public class SetupCommand implements CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("setQueue")) {
                 MLGRush.getInstance().getLocationHandler().setLocation(Locations.QUEUE, player.getLocation());
-                MLGRush.getInstance().getQueueUtils().spawn();
+                MLGRush.getInstance().getMlgrushUtils().spawn();
                 player.sendMessage(MLGRush.getInstance().getPrefix() + "§aDu hast erfolgreich die Location gesetzt!");
                 return true;
             }

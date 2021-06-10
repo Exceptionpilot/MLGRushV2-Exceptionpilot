@@ -19,13 +19,13 @@ public class PlayerInteractAtEntityEventListener implements Listener {
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
         if(event.getRightClicked() == null) return;
         if(event.getRightClicked() instanceof Player) {
-            MLGRush.getInstance().getQueueUtils().handleSword(event.getPlayer(), ((Player) event.getRightClicked()).getPlayer());
+            MLGRush.getInstance().getMlgrushUtils().handleSword(event.getPlayer(), ((Player) event.getRightClicked()).getPlayer());
         }
         if(event.getRightClicked().getCustomName() == null) return;
         RushPlayer rushPlayer = new RushPlayer(event.getPlayer());
         if(!rushPlayer.isLobby()) return;
         if(event.getRightClicked().getCustomName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().queueTitle)) {
-            MLGRush.getInstance().getQueueUtils().handleQueue(rushPlayer);
+            MLGRush.getInstance().getMlgrushUtils().handleQueue(rushPlayer);
         }
     }
 }

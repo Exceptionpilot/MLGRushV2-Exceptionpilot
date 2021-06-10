@@ -37,7 +37,7 @@ public class MLGRush extends JavaPlugin {
     private GameUtils gameUtils;
     private LocationHandler locationHandler;
     private StringUtils stringUtils;
-    private MLGRushUtils queueUtils;
+    private MLGRushUtils mlgrushUtils;
     private ScoreboardManager scoreboardManager;
     private TablistHandler tablistHandler;
     private MapLocations mapLocations;
@@ -61,7 +61,7 @@ public class MLGRush extends JavaPlugin {
         gameUtils = new GameUtils();
         stringUtils = new StringUtils();
         locationHandler = new LocationHandler();
-        queueUtils = new MLGRushUtils();
+        mlgrushUtils = new MLGRushUtils();
         scoreboardManager = new ScoreboardManager();
         tablistHandler = new TablistHandler();
         mapLocations = new MapLocations();
@@ -75,7 +75,7 @@ public class MLGRush extends JavaPlugin {
         setupUtils = new SetupUtils();
         statsUtils = new StatsUtils();
 
-        queueUtils.spawn();
+        mlgrushUtils.spawn();
         mySQL.connect(sqlConfig.getCfg().getString("host"), sqlConfig.getCfg().getString("password"), sqlConfig.getCfg().getString("user"), sqlConfig.getCfg().getString("database"));
         mySQL.createTable();
 
@@ -90,7 +90,7 @@ public class MLGRush extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        queueUtils.kill();
+        mlgrushUtils.kill();
         blockUtils.debugClear();
         if(mySQL.isConnected()) {
             mySQL.close();
@@ -131,6 +131,7 @@ public class MLGRush extends JavaPlugin {
 
     private void intListeners() {
         PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new PlayerBedEnterEventListener(), this);
         pluginManager.registerEvents(new PlayerJoinEventListener(), this);
         pluginManager.registerEvents(new PlayerQuitEventListener(), this);
         pluginManager.registerEvents(new PlayerInteractAtEntityEventListener(), this);
@@ -146,7 +147,6 @@ public class MLGRush extends JavaPlugin {
         pluginManager.registerEvents(new PlayerDropItemEventListener(), this);
         pluginManager.registerEvents(new PlayerPickupItemEventListener(), this);
         pluginManager.registerEvents(new InventoryCloseEventListener(), this);
-        pluginManager.registerEvents(new PlayerBedEnterEventListener(), this);
         pluginManager.registerEvents(new PlayerAchievementAwardedEventListener(), this);
     }
 }

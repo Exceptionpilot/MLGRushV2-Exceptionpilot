@@ -19,9 +19,9 @@ public class PlayerQuitEventListener implements Listener {
         event.setQuitMessage(null);
         RushPlayer rushPlayer = RushPlayer.getPlayer(event.getPlayer());
         if(rushPlayer.isIngame()) {
-            MLGRush.getInstance().getQueueUtils().leaveMatch(rushPlayer);
+            MLGRush.getInstance().getMlgrushUtils().leaveMatch(rushPlayer);
         }
-        MLGRush.getInstance().getQueueUtils().reset(rushPlayer.getPlayer());
-        MLGRush.getInstance().getQueueUtils().getQueueList().remove(rushPlayer.getPlayer());
+        MLGRush.getInstance().getMlgrushUtils().reset(rushPlayer.getPlayer());
+        MLGRush.getInstance().getMlgrushUtils().getQueueList().remove(rushPlayer.getPlayer());
     }
 }

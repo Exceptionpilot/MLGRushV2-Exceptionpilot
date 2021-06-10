@@ -5,8 +5,6 @@ import net.exceptionpilot.mlgrush.player.RushPlayer;
 import net.exceptionpilot.mlgrush.score.utils.BPlayerBoard;
 import net.exceptionpilot.mlgrush.score.utils.Board;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
 
 /**
  * @author Jonas | Exceptionpilot#5555
@@ -52,10 +50,10 @@ public class ScoreboardManager {
             bPlayerBoard.getLines().clear();
             bPlayerBoard.set("§1", 9);
             bPlayerBoard.set("§7Ausgehend", 8);
-            bPlayerBoard.set("§8● §1§e" + (MLGRush.getInstance().getQueueUtils().getMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getQueueUtils().getMatching().get(rushPlayer.getPlayer()) : "[-/-]"), 7);
+            bPlayerBoard.set("§8● §1§e" + (MLGRush.getInstance().getMlgrushUtils().getMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getMlgrushUtils().getMatching().get(rushPlayer.getPlayer()) : "[-/-]"), 7);
             bPlayerBoard.set("§2", 6);
             bPlayerBoard.set("§7Eingehend", 5);
-            bPlayerBoard.set("§8● §2§e" + (MLGRush.getInstance().getQueueUtils().getInMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getQueueUtils().getInMatching().get(rushPlayer.getPlayer()) : "[-/-]"), 4);
+            bPlayerBoard.set("§8● §2§e" + (MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) : "[-/-]"), 4);
             bPlayerBoard.set("§9", 3);
             bPlayerBoard.set("§7Teamspeak", 2);
             bPlayerBoard.set("§8● §eSpigotFork.eu", 1);
@@ -69,13 +67,13 @@ public class ScoreboardManager {
             bPlayerBoard.set("§8● §1§b" + rushPlayer.getMap(), 7);
             bPlayerBoard.set("§2", 6);
             bPlayerBoard.set("§7Gegner", 5);
-            bPlayerBoard.set("§8● §2§e" + MLGRush.getInstance().getQueueUtils().getMatch().get(rushPlayer.getPlayer()).getName(), 4);
+            bPlayerBoard.set("§8● §2§e" + MLGRush.getInstance().getMlgrushUtils().getMatch().get(rushPlayer.getPlayer()).getName(), 4);
             bPlayerBoard.set("§7", 3);
             bPlayerBoard.set("§7Punkte", 2);
             bPlayerBoard.set("§8● " + MLGRush.getInstance().getTeamUtils().getTeamColor(rushPlayer.getPlayer()) +
                     MLGRush.getInstance().getGameUtils().getPoints().get(rushPlayer.getPlayer()) + " §8| " +
-                            MLGRush.getInstance().getTeamUtils().getTeamColor(MLGRush.getInstance().getQueueUtils().getMatch().get(rushPlayer.getPlayer()).getPlayer())
-                    + MLGRush.getInstance().getGameUtils().getPoints().get(MLGRush.getInstance().getQueueUtils().getMatch().get(rushPlayer.getPlayer()))
+                            MLGRush.getInstance().getTeamUtils().getTeamColor(MLGRush.getInstance().getMlgrushUtils().getMatch().get(rushPlayer.getPlayer()).getPlayer())
+                    + MLGRush.getInstance().getGameUtils().getPoints().get(MLGRush.getInstance().getMlgrushUtils().getMatch().get(rushPlayer.getPlayer()))
                     , 1);
             bPlayerBoard.set("§9", 0);
             return;

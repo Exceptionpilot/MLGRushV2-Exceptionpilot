@@ -2,23 +2,18 @@ package net.exceptionpilot.mlgrush.utils;
 
 import lombok.Getter;
 import net.exceptionpilot.mlgrush.MLGRush;
-import net.exceptionpilot.mlgrush.builder.ItemBuilder;
 import net.exceptionpilot.mlgrush.location.types.Locations;
 import net.exceptionpilot.mlgrush.player.RushPlayer;
-import net.exceptionpilot.mlgrush.sql.user.SQLPlayer;
 import net.exceptionpilot.mlgrush.sql.user.SQLStats;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Golem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -59,7 +54,7 @@ public class MLGRushUtils {
                 player.sendMessage(MLGRush.getInstance().getPrefix() + "§cBitte warte bevor du die Aktion erneut ausführst§7§l!");
                 return;
             }
-            if (MLGRush.getInstance().getQueueUtils().getRequests().get(matcher) != player) {
+            if (MLGRush.getInstance().getMlgrushUtils().getRequests().get(matcher) != player) {
                 if (getRequests().get(player) == matcher) {
                     player.sendMessage(MLGRush.getInstance().getPrefix() + "§7Du hast die Anfrage §czurückgezogen!");
                     getMatching().remove(player);
@@ -71,8 +66,8 @@ public class MLGRushUtils {
                 reset(rushPlayer.getPlayer());
                 player.sendMessage(MLGRush.getInstance().getPrefix() + "§7Du hast eine herausforderung §agesendet!");
                 matcher.sendMessage(MLGRush.getInstance().getPrefix() + "§7Du hast eine Herausforderung von §e" + player.getName() + " §aerhalten!");
-                MLGRush.getInstance().getQueueUtils().getMatching().put(player, matcher.getName());
-                MLGRush.getInstance().getQueueUtils().getInMatching().put(matcher, player.getName());
+                MLGRush.getInstance().getMlgrushUtils().getMatching().put(player, matcher.getName());
+                MLGRush.getInstance().getMlgrushUtils().getInMatching().put(matcher, player.getName());
                 rushPlayer.setScoreboard();
                 matchPlayer.setScoreboard();
                 getRequests().put(player, matcher);
@@ -137,10 +132,8 @@ public class MLGRushUtils {
 
 
         player2.setLobby(false);
-        player2.setIngame(true);
         rushPlayer.setQueue(false);
         rushPlayer.setLobby(false);
-        rushPlayer.setIngame(true);
 
         player.sendMessage(MLGRush.getInstance().getPrefix() + "§7Du spielst gegen §e" + rushPlayer.getPlayer().getName() + "§7§l!");
         rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§7Du spielst gegen §e" + player.getName() + "§7§l!");
@@ -164,10 +157,6 @@ public class MLGRushUtils {
         player2.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 1, 250));
 
         MLGRush.getInstance().getTablistHandler().intIngameTablist(player);
-
-        rushPlayer.setScoreboard();
-        player2.setScoreboard();
-
         rushPlayer.forEachReloadSpec();
         MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
         MLGRush.getInstance().getTablistHandler().intIngameTablist(player2.getPlayer());
@@ -175,7 +164,16 @@ public class MLGRushUtils {
         Bukkit.getScheduler().runTaskLater(MLGRush.getInstance(), () -> {
             rushPlayer.teleportToIngameSpawn();
             player2.teleportToIngameSpawn();
-        }, 2L);
+
+            player2.setIngame(true);
+            rushPlayer.setIngame(true);
+
+            player2.setIngameItems();
+            rushPlayer.setIngameItems();
+
+            rushPlayer.setScoreboard();
+            player2.setScoreboard();
+        }, 1L);
     }
 
     public void leaveMatch(RushPlayer rushPlayer) {

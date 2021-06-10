@@ -1,6 +1,5 @@
 package net.exceptionpilot.mlgrush.player;
 
-import com.avaje.ebean.annotation.Sql;
 import lombok.Getter;
 import net.exceptionpilot.mlgrush.MLGRush;
 import net.exceptionpilot.mlgrush.builder.ItemBuilder;
@@ -19,10 +18,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.sql.ResultSet;
 
 /**
  * @author Jonas | Exceptionpilot#5555
@@ -94,19 +90,19 @@ public class RushPlayer {
 
     public void removeFormPlayersScoreboard() {
 
-        MLGRush.getInstance().getQueueUtils().reset(player);
+        MLGRush.getInstance().getMlgrushUtils().reset(player);
 
-        MLGRush.getInstance().getQueueUtils().getRequests().remove(this.getPlayer());
+        MLGRush.getInstance().getMlgrushUtils().getRequests().remove(this.getPlayer());
 
-        MLGRush.getInstance().getQueueUtils().getMatch().remove(this.getPlayer());
+        MLGRush.getInstance().getMlgrushUtils().getMatch().remove(this.getPlayer());
 
-        MLGRush.getInstance().getQueueUtils().getMatching().remove(this.getPlayer());
+        MLGRush.getInstance().getMlgrushUtils().getMatching().remove(this.getPlayer());
 
-        MLGRush.getInstance().getQueueUtils().getMapList().remove(this.getPlayer());
+        MLGRush.getInstance().getMlgrushUtils().getMapList().remove(this.getPlayer());
 
-        MLGRush.getInstance().getQueueUtils().getInMatching().remove(this.getPlayer());
+        MLGRush.getInstance().getMlgrushUtils().getInMatching().remove(this.getPlayer());
 
-        MLGRush.getInstance().getQueueUtils().getQueueList().remove(this.getPlayer());
+        MLGRush.getInstance().getMlgrushUtils().getQueueList().remove(this.getPlayer());
     }
 
     public void setSpec(boolean spec) {
@@ -189,7 +185,7 @@ public class RushPlayer {
         }
         if(v.isIngame()) {
             Bukkit.getOnlinePlayers().forEach(all -> {
-                if(all == MLGRush.getInstance().getQueueUtils().getMatch().get(visibility)) {
+                if(all == MLGRush.getInstance().getMlgrushUtils().getMatch().get(visibility)) {
                     visibility.showPlayer(all);
                 } else {
                     visibility.hidePlayer(all);
@@ -230,7 +226,7 @@ public class RushPlayer {
         if (ic)
             Bukkit.getScheduler().scheduleSyncRepeatingTask(MLGRush.getInstance(), () -> {
                 if (isIngame()) {
-                    sendAc("§8» §eGegner §8➟§c " + MLGRush.getInstance().getGameUtils().getPoints().get(MLGRush.getInstance().getQueueUtils().getMatch().get(player))
+                    sendAc("§8» §eGegner §8➟§c " + MLGRush.getInstance().getGameUtils().getPoints().get(MLGRush.getInstance().getMlgrushUtils().getMatch().get(player))
                             + " §8×§e Du §8➟§9 " + MLGRush.getInstance().getGameUtils().getPoints().get(player) + " §8«");
                 } else {
                     ic = false;
@@ -279,24 +275,24 @@ public class RushPlayer {
     }
 
     public boolean isInQueue() {
-        return MLGRush.getInstance().getQueueUtils().isInQueue(player);
+        return MLGRush.getInstance().getMlgrushUtils().isInQueue(player);
     }
 
     public boolean isInColdown() {
-        return MLGRush.getInstance().getQueueUtils().isInCooldown(player);
+        return MLGRush.getInstance().getMlgrushUtils().isInCooldown(player);
     }
 
     BukkitTask bukkitTask;
 
     public void setCooldown(boolean cooldown) {
         if (cooldown) {
-            MLGRush.getInstance().getQueueUtils().addCooldown(player);
+            MLGRush.getInstance().getMlgrushUtils().addCooldown(player);
             bukkitTask = Bukkit.getScheduler().runTaskLater(MLGRush.getInstance(), () -> {
-                MLGRush.getInstance().getQueueUtils().removeCooldown(player);
+                MLGRush.getInstance().getMlgrushUtils().removeCooldown(player);
             }, 50L);
             return;
         }
-        MLGRush.getInstance().getQueueUtils().removeCooldown(player);
+        MLGRush.getInstance().getMlgrushUtils().removeCooldown(player);
     }
 
     public void setLobbyItems() {
@@ -323,9 +319,9 @@ public class RushPlayer {
 
     public void setQueue(boolean queue) {
         if (queue) {
-            MLGRush.getInstance().getQueueUtils().addQueue(player);
+            MLGRush.getInstance().getMlgrushUtils().addQueue(player);
             return;
         }
-        MLGRush.getInstance().getQueueUtils().removeQueue(player);
+        MLGRush.getInstance().getMlgrushUtils().removeQueue(player);
     }
 }

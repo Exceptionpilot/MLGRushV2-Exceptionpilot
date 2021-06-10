@@ -9,8 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.HashMap;
-
 /**
  * @author Jonas | Exceptionpilot#5555
  * Created on 09.06.2021 «» 22:11
@@ -28,7 +26,7 @@ public class PlayerMoveEventListener implements Listener {
         RushPlayer rushPlayer = RushPlayer.getPlayer(event.getPlayer());
         if(rushPlayer.isIngame()) {
             if(rushPlayer.getPlayer().getLocation().getY() <= MLGRush.getInstance().getMapLocations().getLocation("low." + rushPlayer.getMap()).getY()) {
-                MLGRush.getInstance().getQueueUtils().addPotions(rushPlayer.getPlayer());
+                MLGRush.getInstance().getMlgrushUtils().addPotions(rushPlayer.getPlayer());
                 rushPlayer.teleportToIngameSpawn();
 
                 rushPlayer.getPlayer().playSound(rushPlayer.getPlayer().getLocation(), Sound.BAT_DEATH, 10000, 1);

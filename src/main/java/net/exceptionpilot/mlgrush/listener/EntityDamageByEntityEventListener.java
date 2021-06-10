@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
  * @author Jonas | Exceptionpilot#5555
@@ -22,7 +21,7 @@ public class EntityDamageByEntityEventListener implements Listener {
         if(event.getEntity() instanceof Golem) {
             RushPlayer rushPlayer = RushPlayer.getPlayer((Player) event.getDamager());
             if (rushPlayer.isLobby()) {
-                MLGRush.getInstance().getQueueUtils().handleQueue(rushPlayer);
+                MLGRush.getInstance().getMlgrushUtils().handleQueue(rushPlayer);
                 event.setCancelled(true);
                 return;
             }
@@ -30,7 +29,7 @@ public class EntityDamageByEntityEventListener implements Listener {
         if(event.getEntity() instanceof Player) {
             RushPlayer rushPlayer = RushPlayer.getPlayer((Player) event.getDamager());
             if(rushPlayer.isLobby()) {
-                MLGRush.getInstance().getQueueUtils().handleSword((Player) event.getDamager(), ((Player) event.getEntity()).getPlayer());
+                MLGRush.getInstance().getMlgrushUtils().handleSword((Player) event.getDamager(), ((Player) event.getEntity()).getPlayer());
                 event.setCancelled(true);
                 return;
             } else if(rushPlayer.getMap().equalsIgnoreCase(new RushPlayer((Player) event.getEntity()).getMap())) {
