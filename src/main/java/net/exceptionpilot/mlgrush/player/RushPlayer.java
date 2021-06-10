@@ -1,11 +1,13 @@
 package net.exceptionpilot.mlgrush.player;
 
+import com.avaje.ebean.annotation.Sql;
 import lombok.Getter;
 import net.exceptionpilot.mlgrush.MLGRush;
 import net.exceptionpilot.mlgrush.builder.ItemBuilder;
 import net.exceptionpilot.mlgrush.builder.SkullBuilder;
 import net.exceptionpilot.mlgrush.location.types.Locations;
 import net.exceptionpilot.mlgrush.sql.user.SQLPlayer;
+import net.exceptionpilot.mlgrush.sql.user.SQLStats;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
@@ -163,6 +165,11 @@ public class RushPlayer {
         MLGRush.getInstance().getGameUtils().getBuildMode().remove(player);
         setLobbyItems();
         setScoreboard();
+    }
+
+    public void add(String type) {
+        SQLStats sqlStats = new SQLStats(player.getName());
+        sqlStats.add(type);
     }
 
     public void reloadVisibility(Player visibility) {

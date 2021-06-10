@@ -26,4 +26,5 @@ public class GameUtils {
     private HashMap<Player, Integer> points = new HashMap<>();
     private ArrayList<Player> buildMode = new ArrayList<>();
     private ArrayList<Player> specList = new ArrayList<>();
+    private HashMap<Player, Player> lastHitter = new HashMap<>();
 }

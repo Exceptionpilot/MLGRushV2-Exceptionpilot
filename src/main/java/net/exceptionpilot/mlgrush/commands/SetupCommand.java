@@ -41,6 +41,7 @@ public class SetupCommand implements CommandExecutor {
             player.sendMessage(MLGRush.getInstance().getPrefix() + "§7/setup setLocation <LocationType>");
             player.sendMessage(MLGRush.getInstance().getPrefix() + "§7/setup locationList");
             player.sendMessage(MLGRush.getInstance().getPrefix() + "§7/setup setQueue");
+            player.sendMessage(MLGRush.getInstance().getPrefix() + "§7/setup setWall <id>");
             player.sendMessage(MLGRush.getInstance().getPrefix() + "§7/setup startMap");
         }
         if (args.length == 1) {
@@ -67,6 +68,20 @@ public class SetupCommand implements CommandExecutor {
         }
 
         if (args.length == 2) {
+            if(args[0].equalsIgnoreCase("setwall")) {
+                try {
+                    int i = Integer.valueOf(args[1]);
+                    MLGRush.getInstance().getSetupUtils().setupGetter.put(player, i);
+                    MLGRush.getInstance().getSetupManager().getSetup().add(player);
+                    MLGRush.getInstance().getSetupManager().getSetupList().put(player, 12);
+                    player.sendMessage(MLGRush.getInstance().getPrefix() + "§cSchlage nun den Kopf der Statswand!");
+                    RushPlayer rushPlayer = RushPlayer.getPlayer(player);
+                    rushPlayer.setBuildMode(true);
+                } catch (IllegalArgumentException exception) {
+                    player.sendMessage(MLGRush.getInstance().getPrefix() + "§cDie Id muss eine Zahl sein!");
+                }
+                return true;
+            }
             if (args[0].equalsIgnoreCase("setLocation")) {
                 List<String> locationList = new ArrayList<>();
                 Arrays.stream(Locations.values()).forEach(locations -> {

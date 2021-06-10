@@ -44,22 +44,22 @@ public class MLGRushUtils {
     private HashMap<Player, Player> requests = new HashMap<>();
 
     public void handleSword(Player player, Player matcher) {
-        if(player.getItemInHand() == null) return;
-        if(player.getItemInHand().getItemMeta() == null) return;
-        if(player.getItemInHand().getItemMeta().getDisplayName() == null) return;
-        if(!player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().itemNames.get("sword"))) {
+        if (player.getItemInHand() == null) return;
+        if (player.getItemInHand().getItemMeta() == null) return;
+        if (player.getItemInHand().getItemMeta().getDisplayName() == null) return;
+        if (!player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().itemNames.get("sword"))) {
             return;
         }
         RushPlayer rushPlayer = RushPlayer.getPlayer(player);
         RushPlayer matchPlayer = RushPlayer.getPlayer(matcher);
-        if(matchPlayer.isLobby() && rushPlayer.isLobby()) {
+        if (matchPlayer.isLobby() && rushPlayer.isLobby()) {
             rushPlayer.setQueue(false);
-            if(rushPlayer.isInColdown()) {
-                player.sendMessage(MLGRush.getInstance().getPrefix() + "§cBitte warte bevor du die Aktion erneut ausführen kannst!");
+            if (rushPlayer.isInColdown()) {
+                player.sendMessage(MLGRush.getInstance().getPrefix() + "§cBitte warte bevor du die Aktion erneut ausführst§7§l!");
                 return;
             }
             if (MLGRush.getInstance().getQueueUtils().getRequests().get(matcher) != player) {
-                if(getRequests().get(player) == matcher) {
+                if (getRequests().get(player) == matcher) {
                     player.sendMessage(MLGRush.getInstance().getPrefix() + "§7Du hast die Anfrage §czurückgezogen!");
                     getMatching().remove(player);
                     reset(player);
@@ -124,7 +124,7 @@ public class MLGRushUtils {
 
     public void startMatch(Player player, Player matcher) {
 
-        if(!MLGRush.getInstance().getMapManager().hasMap()) {
+        if (!MLGRush.getInstance().getMapManager().hasMap()) {
             player.sendMessage(MLGRush.getInstance().getPrefix() + "§cMomentan ist keine Map verfügbar!");
             return;
         }
@@ -202,6 +202,13 @@ public class MLGRushUtils {
         getQueueList().remove(rushPlayer.getPlayer());
         getQueueList().remove(rushPlayer1.getPlayer());
 
+        rushPlayer.add("LOSES");
+        rushPlayer1.add("WINS");
+        rushPlayer1.add("POINTS");
+
+        MLGRush.getInstance().getGameUtils().getLastHitter().remove(rushPlayer.getPlayer());
+        MLGRush.getInstance().getGameUtils().getLastHitter().remove(rushPlayer1.getPlayer());
+
         MLGRush.getInstance().getGameUtils().getPoints().remove(rushPlayer.getPlayer());
         MLGRush.getInstance().getGameUtils().getPoints().remove(rushPlayer1.getPlayer());
 
@@ -228,17 +235,17 @@ public class MLGRushUtils {
     }
 
     public void handleQueue(RushPlayer rushPlayer) {
-        if(rushPlayer.isSpec() || rushPlayer.isBuildMode()) {
+        if (rushPlayer.isSpec() || rushPlayer.isBuildMode()) {
             return;
         }
-        if(rushPlayer.getPlayer().getItemInHand() == null) return;
-        if(rushPlayer.getPlayer().getItemInHand().getItemMeta() == null) return;
-        if(rushPlayer.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null) return;
-        if(!rushPlayer.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().itemNames.get("sword"))) {
+        if (rushPlayer.getPlayer().getItemInHand() == null) return;
+        if (rushPlayer.getPlayer().getItemInHand().getItemMeta() == null) return;
+        if (rushPlayer.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null) return;
+        if (!rushPlayer.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().itemNames.get("sword"))) {
             return;
         }
         if (rushPlayer.isInColdown()) {
-            rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cBitte warte bevor du diese Aktion erneut ausführst");
+            rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cBitte warte bevor du diese Aktion erneut ausführst§7§l!");
             return;
         }
         if (!rushPlayer.isInQueue()) {
@@ -263,15 +270,27 @@ public class MLGRushUtils {
     }
 
     public void reset(Player player) {
-        if(getRequests().containsKey(player.getPlayer())) {
+        if (getRequests().containsKey(player.getPlayer())) {
             Player old = getRequests().get(player.getPlayer());
-            if(old != null) {
+            if (old != null) {
                 RushPlayer oldPlayer = RushPlayer.getPlayer(old);
                 getInMatching().remove(old);
+                getMatching().remove(old);
+                getMatching().remove(player);
                 oldPlayer.setScoreboard();
             }
             getRequests().remove(player.getPlayer());
         }
+        Bukkit.getOnlinePlayers().forEach(all -> {
+            if(matching.containsKey(all)) {
+                if(matching.get(all).equalsIgnoreCase(player.getName())) {
+                    getRequests().remove(all);
+                    matching.remove(all);
+                    RushPlayer allRush = RushPlayer.getPlayer(all);
+                    allRush.setScoreboard();
+                }
+            }
+        });
     }
 
     public boolean isInCooldown(Player player) {

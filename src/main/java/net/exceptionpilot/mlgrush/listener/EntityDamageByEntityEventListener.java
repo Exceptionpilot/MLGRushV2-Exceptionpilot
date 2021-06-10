@@ -33,6 +33,9 @@ public class EntityDamageByEntityEventListener implements Listener {
                 MLGRush.getInstance().getQueueUtils().handleSword((Player) event.getDamager(), ((Player) event.getEntity()).getPlayer());
                 event.setCancelled(true);
                 return;
+            } else if(rushPlayer.getMap().equalsIgnoreCase(new RushPlayer((Player) event.getEntity()).getMap())) {
+                event.setDamage(0);
+                MLGRush.getInstance().getGameUtils().getLastHitter().put((Player) event.getEntity(), (Player) event.getDamager());
             } else {
                 event.setDamage(0);
             }

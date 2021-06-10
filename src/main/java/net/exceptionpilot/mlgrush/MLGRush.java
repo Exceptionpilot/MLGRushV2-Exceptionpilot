@@ -1,15 +1,13 @@
 package net.exceptionpilot.mlgrush;
 
 import lombok.Getter;
-import net.exceptionpilot.mlgrush.commands.BuildCommand;
-import net.exceptionpilot.mlgrush.commands.QuitCommand;
-import net.exceptionpilot.mlgrush.commands.SetupCommand;
-import net.exceptionpilot.mlgrush.commands.SpecCommand;
+import net.exceptionpilot.mlgrush.commands.*;
 import net.exceptionpilot.mlgrush.listener.*;
 import net.exceptionpilot.mlgrush.location.LocationHandler;
 import net.exceptionpilot.mlgrush.location.MapLocations;
 import net.exceptionpilot.mlgrush.manager.MapManager;
 import net.exceptionpilot.mlgrush.manager.SetupManager;
+import net.exceptionpilot.mlgrush.manager.StatsWallManager;
 import net.exceptionpilot.mlgrush.score.ScoreboardManager;
 import net.exceptionpilot.mlgrush.sql.MySQL;
 import net.exceptionpilot.mlgrush.sql.config.SQLConfig;
@@ -47,7 +45,10 @@ public class MLGRush extends JavaPlugin {
     private MapUtils mapUtils;
     private BlockUtils blockUtils;
     private MySQL mySQL;
+    private StatsUtils statsUtils;
+    private SetupUtils setupUtils;
     private SQLConfig sqlConfig;
+    private StatsWallManager statsWallManager;
 
     public String prefix = "§8»§7» §eMLGRush §8┃ ";
     public String noPerms = prefix + "§7Dazu hast du keine §cBerechtigung§7§l!";
@@ -69,10 +70,14 @@ public class MLGRush extends JavaPlugin {
         mySQL = new MySQL();
         blockUtils = new BlockUtils();
         sqlConfig = new SQLConfig();
+        setupUtils = new SetupUtils();
+        statsUtils = new StatsUtils();
 
         queueUtils.spawn();
         mySQL.connect(sqlConfig.getCfg().getString("host"), sqlConfig.getCfg().getString("password"), sqlConfig.getCfg().getString("user"), sqlConfig.getCfg().getString("database"));
         mySQL.createTable();
+
+        statsWallManager = new StatsWallManager();
 
         this.kick();
         this.intListeners();
@@ -95,6 +100,7 @@ public class MLGRush extends JavaPlugin {
         this.getCommand("quit").setExecutor(new QuitCommand());
         this.getCommand("build").setExecutor(new BuildCommand());
         this.getCommand("spec").setExecutor(new SpecCommand());
+        this.getCommand("stats").setExecutor(new StatsCommand());
     }
 
     private void intWorlds() {

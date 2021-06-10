@@ -2,6 +2,7 @@ package net.exceptionpilot.mlgrush.manager;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import net.exceptionpilot.mlgrush.MLGRush;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,6 +14,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Jonas | Exceptionpilot#5555
@@ -34,6 +36,7 @@ public class SetupManager {
         player.sendMessage(MLGRush.getInstance().getPrefix() + "§7Schreibe nun den Namen der Map in den Chat!");
     }
 
+    @SneakyThrows
     public void push(Player player) {
         int i = setupList.get(player);
         int a = setupList.get(player) + 1;
@@ -71,8 +74,22 @@ public class SetupManager {
                 setup.remove(player);
                 setupList.remove(player);
                 break;
+            case 13:
+                player.sendMessage(MLGRush.getInstance().getPrefix() + "§cSchlage nun das Schild der Statswand!");
+                break;
+            case 14:
+                player.sendMessage(MLGRush.getInstance().getPrefix() + "§aDu hast das Setup erfolgreich beendet!");
+                List<String> list = MLGRush.getInstance().getMapLocations().getYamlConfiguration().getStringList("skulls");
+                if(!list.contains(MLGRush.getInstance().getSetupUtils().setupGetter.get(player) + "")) {
+                    list.add(MLGRush.getInstance().getSetupUtils().setupGetter.get(player) + "");
+                    MLGRush.getInstance().getMapLocations().getYamlConfiguration().set("skulls", list);
+                    MLGRush.getInstance().getMapLocations().getYamlConfiguration().save(MLGRush.getInstance().getMapLocations().getFile());
+                }
+                MLGRush.getInstance().getSetupUtils().setupGetter.remove(player);
+                setupList.remove(player);
+                break;
         }
-        if(a != 10) {
+        if(a != 10 || a != 14) {
             setupList.remove(player);
             setupList.put(player, a);
         }

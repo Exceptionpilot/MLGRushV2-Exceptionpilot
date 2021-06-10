@@ -27,6 +27,7 @@ public class TablistHandler {
 
     public void intIngameTablist(Player player) {
         scoreboard.getTeam("010Spieler").addPlayer(player);
+        player.setDisplayName(scoreboard.getTeam("010Spieler").getPrefix() + player.getName());
         Bukkit.getOnlinePlayers().forEach(all -> {
             all.setScoreboard(scoreboard);
         });

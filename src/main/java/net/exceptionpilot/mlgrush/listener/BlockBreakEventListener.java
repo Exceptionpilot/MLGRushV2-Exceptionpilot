@@ -37,6 +37,22 @@ public class BlockBreakEventListener implements Listener {
                 MLGRush.getInstance().getMapLocations().setLocation("bed.blau.unten." + MLGRush.getInstance().getSetupManager().getMap(), location);
                 MLGRush.getInstance().getSetupManager().push(event.getPlayer());
             }
+            if(i == 12) {
+                if(event.getBlock().getType() == Material.SKULL) {
+                    MLGRush.getInstance().getMapLocations().setLocation("statswall.skull." + MLGRush.getInstance().getSetupUtils().setupGetter.get(event.getPlayer()), location);
+                    MLGRush.getInstance().getSetupManager().push(event.getPlayer());
+                } else {
+                    event.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cDas ist kein SKull!");
+                }
+            }
+            if(i == 13) {
+                if(event.getBlock().getType() == Material.SIGN_POST || event.getBlock().getType() == Material.WALL_SIGN || event.getBlock().getType() == Material.SIGN) {
+                    MLGRush.getInstance().getMapLocations().setLocation("statswall.sign." + MLGRush.getInstance().getSetupUtils().setupGetter.get(event.getPlayer()), location);
+                    MLGRush.getInstance().getSetupManager().push(event.getPlayer());
+                } else {
+                    event.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§cDas ist kein Schild!");
+                }
+            }
             event.setCancelled(true);
             return;
         }
@@ -46,6 +62,8 @@ public class BlockBreakEventListener implements Listener {
                 Location location = event.getBlock().getLocation();
                 if(location.equals(MLGRush.getInstance().getMapLocations().getLocation("bed.rot.oben." + rushPlayer.getMap()))) {
                     if(!rushPlayer.getTeam().equalsIgnoreCase("rot")) {
+                        rushPlayer.add("BEDS");
+                        rushPlayer.add("POINTS");
                         MLGRush.getInstance().getQueueUtils().addPoint(rushPlayer.getPlayer());
                         MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
                     } else {
@@ -54,6 +72,8 @@ public class BlockBreakEventListener implements Listener {
                 }
                 if(location.equals(MLGRush.getInstance().getMapLocations().getLocation("bed.rot.unten." + rushPlayer.getMap()))) {
                     if(!rushPlayer.getTeam().equalsIgnoreCase("rot")) {
+                        rushPlayer.add("BEDS");
+                        rushPlayer.add("POINTS");
                         MLGRush.getInstance().getQueueUtils().addPoint(rushPlayer.getPlayer());
                         MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
                     } else {
@@ -62,6 +82,8 @@ public class BlockBreakEventListener implements Listener {
                 }
                 if(location.equals(MLGRush.getInstance().getMapLocations().getLocation("bed.blau.oben." + rushPlayer.getMap()))) {
                     if(!rushPlayer.getTeam().equalsIgnoreCase("blau")) {
+                        rushPlayer.add("BEDS");
+                        rushPlayer.add("POINTS");
                         MLGRush.getInstance().getQueueUtils().addPoint(rushPlayer.getPlayer());
                         MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
                     } else {
@@ -70,6 +92,8 @@ public class BlockBreakEventListener implements Listener {
                 }
                 if(location.equals(MLGRush.getInstance().getMapLocations().getLocation("bed.blau.unten." + rushPlayer.getMap()))) {
                     if(!rushPlayer.getTeam().equalsIgnoreCase("blau")) {
+                        rushPlayer.add("BEDS");
+                        rushPlayer.add("POINTS");
                         MLGRush.getInstance().getQueueUtils().addPoint(rushPlayer.getPlayer());
                         MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
                     } else {

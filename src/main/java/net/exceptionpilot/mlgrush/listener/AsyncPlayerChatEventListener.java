@@ -53,5 +53,7 @@ public class AsyncPlayerChatEventListener implements Listener {
             }
             event.setCancelled(true);
         }
+
+        event.setFormat(event.getPlayer().getDisplayName() + " §8|§7 " +  event.getMessage());
     }
 }

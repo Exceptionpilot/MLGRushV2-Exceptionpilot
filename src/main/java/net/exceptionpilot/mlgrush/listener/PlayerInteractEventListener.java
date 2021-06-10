@@ -63,6 +63,12 @@ public class PlayerInteractEventListener implements Listener {
 
                 rushPlayer.getPlayer().openInventory(inventory);
             }
+        } else if(rushPlayer.isIngame()) {
+            if(event.getClickedBlock() == null) return;
+            if(event.getClickedBlock().getType() == null) return;
+            if(event.getClickedBlock().getType() == Material.BED_BLOCK) {
+                event.setCancelled(true);
+            }
         }
     }
 }

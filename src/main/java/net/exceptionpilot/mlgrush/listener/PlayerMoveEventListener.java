@@ -2,10 +2,14 @@ package net.exceptionpilot.mlgrush.listener;
 
 import net.exceptionpilot.mlgrush.MLGRush;
 import net.exceptionpilot.mlgrush.player.RushPlayer;
+import net.exceptionpilot.mlgrush.sql.user.SQLStats;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+
+import java.util.HashMap;
 
 /**
  * @author Jonas | Exceptionpilot#5555
@@ -14,6 +18,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
  **/
 
 public class PlayerMoveEventListener implements Listener {
+
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -25,6 +30,16 @@ public class PlayerMoveEventListener implements Listener {
             if(rushPlayer.getPlayer().getLocation().getY() <= MLGRush.getInstance().getMapLocations().getLocation("low." + rushPlayer.getMap()).getY()) {
                 MLGRush.getInstance().getQueueUtils().addPotions(rushPlayer.getPlayer());
                 rushPlayer.teleportToIngameSpawn();
+
+                rushPlayer.getPlayer().playSound(rushPlayer.getPlayer().getLocation(), Sound.BAT_DEATH, 10000, 1);
+
+                rushPlayer.add("DEATHS");
+                if(MLGRush.getInstance().getGameUtils().getLastHitter().get(event.getPlayer()) != null && MLGRush.getInstance().getGameUtils().getLastHitter().containsKey(event.getPlayer())) {
+                    SQLStats sqlStats = new SQLStats(MLGRush.getInstance().getGameUtils().getLastHitter().get(rushPlayer.getPlayer()).getName());
+                    sqlStats.add("KILLS");
+                    sqlStats.add("POINTS");
+                    MLGRush.getInstance().getGameUtils().getLastHitter().remove(rushPlayer.getPlayer(), MLGRush.getInstance().getGameUtils().getLastHitter().get(rushPlayer.getPlayer()));
+                }
             }
         }
     }

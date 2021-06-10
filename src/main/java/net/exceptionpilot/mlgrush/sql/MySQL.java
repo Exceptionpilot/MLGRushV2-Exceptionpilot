@@ -40,6 +40,9 @@ public class MySQL {
         if(isConnected()) {
             PreparedStatement preparedStatement = getPreparedStatement("CREATE TABLE IF NOT EXISTS mlgrush_players (UUID VARCHAR(64), STICK INT(16), BLOCK INT(16), PICKAXE INT(16));");
             preparedStatement.execute();
+
+            PreparedStatement preparedStatement1 = getPreparedStatement("CREATE TABLE IF NOT EXISTS mlgrush_players_stats (UUID VARCHAR(64), REALNAME VARCHAR(64), NAME VARCHAR(64), KILLS INT(16), DEATHS INT(16), WINS INT(16), LOSES INT(16), POINTS INT(16), BEDS INT(16));");
+            preparedStatement1.execute();
         }
     }
 
