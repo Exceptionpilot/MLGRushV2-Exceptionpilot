@@ -38,7 +38,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
             Scoreboard sb = player.getScoreboard();
 
             if(sb == null || sb == Bukkit.getScoreboardManager().getMainScoreboard())
-                sb = Bukkit.getScoreboardManager().getNewScoreboard();
+                sb = Bukkit.getScoreboardManager().getMainScoreboard();
 
             this.scoreboard = sb;
         }

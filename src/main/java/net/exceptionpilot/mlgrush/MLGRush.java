@@ -13,11 +13,11 @@ import net.exceptionpilot.mlgrush.player.RushPlayer;
 import net.exceptionpilot.mlgrush.score.ScoreboardManager;
 import net.exceptionpilot.mlgrush.sql.MySQL;
 import net.exceptionpilot.mlgrush.sql.config.SQLConfig;
-import net.exceptionpilot.mlgrush.tablist.TablistHandler;
 import net.exceptionpilot.mlgrush.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,7 +39,6 @@ public class MLGRush extends JavaPlugin {
     private StringUtils stringUtils;
     private MLGRushUtils mlgrushUtils;
     private ScoreboardManager scoreboardManager;
-    private TablistHandler tablistHandler;
     private MapLocations mapLocations;
     private MapManager mapManager;
     private SetupManager setupManager;
@@ -63,7 +62,6 @@ public class MLGRush extends JavaPlugin {
         locationHandler = new LocationHandler();
         mlgrushUtils = new MLGRushUtils();
         scoreboardManager = new ScoreboardManager();
-        tablistHandler = new TablistHandler();
         mapLocations = new MapLocations();
         setupManager = new SetupManager();
         teamUtils = new TeamUtils();
@@ -110,6 +108,8 @@ public class MLGRush extends JavaPlugin {
             world.setDifficulty(Difficulty.PEACEFUL);
             world.setTime(6000);
             world.setThundering(false);
+            world.setGameRuleValue("doMobSpawning", "false");
+            world.setGameRuleValue("doDaylightCycle", "false");
             world.setWeatherDuration(0);
         }
     }
@@ -148,5 +148,6 @@ public class MLGRush extends JavaPlugin {
         pluginManager.registerEvents(new PlayerPickupItemEventListener(), this);
         pluginManager.registerEvents(new InventoryCloseEventListener(), this);
         pluginManager.registerEvents(new PlayerAchievementAwardedEventListener(), this);
+        pluginManager.registerEvents(new WeatherChangeEventListener(), this);
     }
 }

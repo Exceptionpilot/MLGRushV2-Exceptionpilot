@@ -100,8 +100,6 @@ public class MLGRushUtils {
         rushPlayer1.setScoreboard();
 
         rushPlayer.forEachReloadSpec();
-        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
-        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer1.getPlayer());
     }
 
     public void addPotions(Player player) {
@@ -156,10 +154,7 @@ public class MLGRushUtils {
         player2.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 1, 255));
         player2.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 1, 250));
 
-        MLGRush.getInstance().getTablistHandler().intIngameTablist(player);
         rushPlayer.forEachReloadSpec();
-        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
-        MLGRush.getInstance().getTablistHandler().intIngameTablist(player2.getPlayer());
 
         Bukkit.getScheduler().runTaskLater(MLGRush.getInstance(), () -> {
             rushPlayer.teleportToIngameSpawn();
@@ -229,8 +224,6 @@ public class MLGRushUtils {
         rushPlayer.setScoreboard();
 
         rushPlayer.forEachReloadSpec();
-        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
-        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer1.getPlayer());
     }
 
     public void handleQueue(RushPlayer rushPlayer) {
@@ -249,7 +242,7 @@ public class MLGRushUtils {
         }
         if (!rushPlayer.isInQueue()) {
             reset(rushPlayer.getPlayer());
-            matching.put(rushPlayer.getPlayer(), "§aWarteschlange");
+            matching.put(rushPlayer.getPlayer(), "§eQueue");
             rushPlayer.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§7Du hast erfolgreich die Warteschlange §abetreten!");
             rushPlayer.setQueue(true);
             if (queueList.size() >= 2) {

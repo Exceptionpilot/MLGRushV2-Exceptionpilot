@@ -27,6 +27,5 @@ public class PlayerJoinEventListener implements Listener {
         rushPlayer.setLobbyItems();
         rushPlayer.setScoreboard();
         rushPlayer.forEachReloadSpec();
-        MLGRush.getInstance().getTablistHandler().intIngameTablist(rushPlayer.getPlayer());
     }
 }

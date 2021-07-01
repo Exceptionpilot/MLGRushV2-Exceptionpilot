@@ -25,10 +25,10 @@ public class ScoreboardManager {
             bPlayerBoard.set("§8● §1§aAktiviert!", 7);
             bPlayerBoard.set("§2", 6);
             bPlayerBoard.set("§7Shop", 5);
-            bPlayerBoard.set("§8● §1§2§eSpigotFork.eu", 4);
+            bPlayerBoard.set("§8● §1§2§eMyWars.eu", 4);
             bPlayerBoard.set("§9", 3);
             bPlayerBoard.set("§7Teamspeak", 2);
-            bPlayerBoard.set("§8● §eSpigotFork.eu", 1);
+            bPlayerBoard.set("§8● §eMyWars.eu", 1);
             bPlayerBoard.set("§4", 0);
             return;
         }
@@ -39,10 +39,10 @@ public class ScoreboardManager {
             bPlayerBoard.set("§8● §1§aAktiviert!", 7);
             bPlayerBoard.set("§2", 6);
             bPlayerBoard.set("§7Shop", 5);
-            bPlayerBoard.set("§8● §1§2§eSpigotFork.eu", 4);
+            bPlayerBoard.set("§8● §1§2§eMyWars.eu", 4);
             bPlayerBoard.set("§9", 3);
             bPlayerBoard.set("§7Teamspeak", 2);
-            bPlayerBoard.set("§8● §eSpigotFork.eu", 1);
+            bPlayerBoard.set("§8● §eMyWars.eu", 1);
             bPlayerBoard.set("§4", 0);
             return;
         }
@@ -56,7 +56,7 @@ public class ScoreboardManager {
             bPlayerBoard.set("§8● §2§e" + (MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) : "§c✘"), 4);
             bPlayerBoard.set("§9", 3);
             bPlayerBoard.set("§7Teamspeak", 2);
-            bPlayerBoard.set("§8● §eSpigotFork.eu", 1);
+            bPlayerBoard.set("§8● §eMyWars.eu", 1);
             bPlayerBoard.set("§4", 0);
             return;
         }
