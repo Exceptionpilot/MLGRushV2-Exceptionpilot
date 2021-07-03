@@ -8,6 +8,7 @@ import net.exceptionpilot.mlgrush.location.MapLocations;
 import net.exceptionpilot.mlgrush.location.types.Locations;
 import net.exceptionpilot.mlgrush.manager.MapManager;
 import net.exceptionpilot.mlgrush.manager.SetupManager;
+import net.exceptionpilot.mlgrush.manager.SpecManager;
 import net.exceptionpilot.mlgrush.manager.StatsWallManager;
 import net.exceptionpilot.mlgrush.player.RushPlayer;
 import net.exceptionpilot.mlgrush.score.ScoreboardManager;
@@ -22,6 +23,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
+
+import static org.bukkit.Bukkit.getScheduler;
 
 /**
  * @author Jonas | Exceptionpilot#5555
@@ -50,6 +53,7 @@ public class MLGRush extends JavaPlugin {
     private SetupUtils setupUtils;
     private SQLConfig sqlConfig;
     private StatsWallManager statsWallManager;
+    private SpecManager specManager;
 
     public String prefix = "§8»§7» §eMLGRush §8┃ ";
     public String noPerms = prefix + "§7Dazu hast du keine §cBerechtigung§7§l!";
@@ -72,6 +76,7 @@ public class MLGRush extends JavaPlugin {
         sqlConfig = new SQLConfig();
         setupUtils = new SetupUtils();
         statsUtils = new StatsUtils();
+        specManager = new SpecManager();
 
         mlgrushUtils.spawn();
         mySQL.connect(sqlConfig.getCfg().getString("host"), sqlConfig.getCfg().getString("password"), sqlConfig.getCfg().getString("user"), sqlConfig.getCfg().getString("database"));
@@ -83,6 +88,7 @@ public class MLGRush extends JavaPlugin {
         this.intListeners();
         this.intCommands();
         this.intWorlds();
+        this.hideStartUp();
         this.getLogger().log(Level.INFO, "Das Plugin wurde erfolgreich gestartet!");
     }
 
@@ -101,6 +107,12 @@ public class MLGRush extends JavaPlugin {
         this.getCommand("build").setExecutor(new BuildCommand());
         this.getCommand("spec").setExecutor(new SpecCommand());
         this.getCommand("stats").setExecutor(new StatsCommand());
+    }
+
+    private void hideStartUp() {
+        getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            Bukkit.getOnlinePlayers().forEach(c -> new RushPlayer(null).hidePlayer(c));
+        }, 20, 20);
     }
 
     private void intWorlds() {

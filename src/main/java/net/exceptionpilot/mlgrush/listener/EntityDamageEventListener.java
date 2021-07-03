@@ -29,5 +29,8 @@ public class EntityDamageEventListener implements Listener {
                 event.setCancelled(true);
             }
         }
+        if(rushPlayer.isPlayerSpec()) {
+            event.setCancelled(true);
+        }
     }
 }

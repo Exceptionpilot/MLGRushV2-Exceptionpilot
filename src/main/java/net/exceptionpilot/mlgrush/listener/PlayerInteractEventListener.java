@@ -2,6 +2,9 @@ package net.exceptionpilot.mlgrush.listener;
 
 import net.exceptionpilot.mlgrush.MLGRush;
 import net.exceptionpilot.mlgrush.builder.ItemBuilder;
+import net.exceptionpilot.mlgrush.location.LocationHandler;
+import net.exceptionpilot.mlgrush.location.types.Locations;
+import net.exceptionpilot.mlgrush.manager.SpecManager;
 import net.exceptionpilot.mlgrush.player.RushPlayer;
 import net.exceptionpilot.mlgrush.sql.user.SQLPlayer;
 import org.bukkit.Bukkit;
@@ -26,7 +29,7 @@ public class PlayerInteractEventListener implements Listener {
         if(event.getItem() == null) return;
         if(event.getItem().getItemMeta() == null) return;
         if(event.getItem().getItemMeta().getDisplayName() == null) return;
-        if(rushPlayer.isLobby() && !rushPlayer.isBuildMode()) {
+        if(rushPlayer.isLobby() && !rushPlayer.isBuildMode() && !rushPlayer.isPlayerSpec()) {
             if (event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().getItemNames().get("leave"))) {
                 rushPlayer.getPlayer().kickPlayer(MLGRush.getInstance().getPrefix() + "§7Du hast MLGRush §cverlassen!");
             }
@@ -62,6 +65,15 @@ public class PlayerInteractEventListener implements Listener {
                 );
 
                 rushPlayer.getPlayer().openInventory(inventory);
+            }
+            if((event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().getItemNames().get("spec")))) {
+                SpecManager.getInstance().openSpecInventory(rushPlayer.getPlayer());
+            }
+        } else if(rushPlayer.isPlayerSpec()) {
+            if((event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase(MLGRush.getInstance().getStringUtils().getItemNames().get("leavespec")))) {
+                MLGRush.getInstance().getLocationHandler().teleport(Locations.SPAWN, rushPlayer.getPlayer());
+                rushPlayer.setPlayerSpec(false);
+                rushPlayer.setScoreboard();
             }
         }
     }

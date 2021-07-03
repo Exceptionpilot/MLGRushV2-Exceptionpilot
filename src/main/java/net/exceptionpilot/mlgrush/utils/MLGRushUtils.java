@@ -38,6 +38,7 @@ public class MLGRushUtils {
     private HashMap<Player, Player> match = new HashMap<>();
     private HashMap<Player, String> mapList = new HashMap<>();
     private HashMap<Player, Player> requests = new HashMap<>();
+    private ArrayList<String> matches = new ArrayList<>();
 
     public void handleSword(Player player, Player matcher) {
         if (player.getItemInHand() == null) return;
@@ -75,7 +76,6 @@ public class MLGRushUtils {
                 startMatch(player, matcher);
             }
         }
-        rushPlayer.forEachReloadSpec();
     }
 
     public void addPoint(Player player) {
@@ -99,7 +99,6 @@ public class MLGRushUtils {
         rushPlayer.setScoreboard();
         rushPlayer1.setScoreboard();
 
-        rushPlayer.forEachReloadSpec();
     }
 
     public void addPotions(Player player) {
@@ -145,7 +144,8 @@ public class MLGRushUtils {
         rushPlayer.setMap(map);
         player2.setMap(map);
 
-        MLGRush.getInstance().getGameUtils().getPoints().put(player, 0);
+        matches.add(map);
+
         MLGRush.getInstance().getGameUtils().getPoints().put(player2.getPlayer(), 0);
         MLGRush.getInstance().getGameUtils().getPoints().put(rushPlayer.getPlayer(), 0);
 
@@ -153,8 +153,6 @@ public class MLGRushUtils {
         rushPlayer.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 1, 250));
         player2.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 1, 255));
         player2.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20 * 1, 250));
-
-        rushPlayer.forEachReloadSpec();
 
         Bukkit.getScheduler().runTaskLater(MLGRush.getInstance(), () -> {
             rushPlayer.teleportToIngameSpawn();
@@ -174,6 +172,26 @@ public class MLGRushUtils {
     public void leaveMatch(RushPlayer rushPlayer) {
         RushPlayer rushPlayer1 = RushPlayer.getPlayer(match.get(rushPlayer.getPlayer()));
         MLGRush.getInstance().getMapManager().availableMaps.add(rushPlayer.getMap());
+
+        matches.remove(rushPlayer.getMap());
+
+        try {
+            MLGRush.getInstance().getGameUtils().getPlayerSpecList().entrySet().forEach(all -> {
+                try {
+                    if(all.getKey() == null) {
+                        return;
+                    }
+                    if(all.getValue().equalsIgnoreCase(rushPlayer.getMap())) {
+                        RushPlayer target = RushPlayer.getPlayer(all.getKey());
+                        MLGRush.getInstance().getLocationHandler().teleport(Locations.SPAWN, target.getPlayer());
+                        target.getPlayer().sendMessage(MLGRush.getInstance().getPrefix() + "§7Das Match wurde §cbeendet§7§l!");
+                        target.setLobby(true);
+                        target.setPlayerSpec(false);
+                        target.setScoreboard();
+                    }
+                } catch (Exception exception) {}
+            });
+        } catch (Exception exception) {}
 
         MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer.getMap());
         MLGRush.getInstance().getBlockUtils().clearBlocks(rushPlayer1.getMap());
@@ -223,7 +241,6 @@ public class MLGRushUtils {
         rushPlayer1.setScoreboard();
         rushPlayer.setScoreboard();
 
-        rushPlayer.forEachReloadSpec();
     }
 
     public void handleQueue(RushPlayer rushPlayer) {
@@ -258,7 +275,6 @@ public class MLGRushUtils {
             rushPlayer.setScoreboard();
         }
 
-        rushPlayer.forEachReloadSpec();
     }
 
     public void reset(Player player) {

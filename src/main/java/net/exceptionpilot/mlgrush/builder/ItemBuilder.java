@@ -33,7 +33,9 @@ public class ItemBuilder {
     public ItemBuilder(Material material) {
         this.itemStack = new ItemStack(material, 1, (short) 0);
         this.itemMeta = this.itemStack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
+        if(material != Material.STAINED_GLASS_PANE || material != Material.PAPER) {
+            itemMeta.spigot().setUnbreakable(true);
+        }
     }
 
     public ItemBuilder setDisplayName(String displayName) {

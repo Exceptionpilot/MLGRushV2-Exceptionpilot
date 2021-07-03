@@ -7,9 +7,7 @@ import net.exceptionpilot.mlgrush.builder.SkullBuilder;
 import net.exceptionpilot.mlgrush.location.types.Locations;
 import net.exceptionpilot.mlgrush.sql.user.SQLPlayer;
 import net.exceptionpilot.mlgrush.sql.user.SQLStats;
-import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -105,13 +103,30 @@ public class RushPlayer {
         MLGRush.getInstance().getMlgrushUtils().getQueueList().remove(this.getPlayer());
     }
 
-    public void setSpec(boolean spec) {
-        if(spec) {
+    public void setSpec(boolean spec, boolean bol) {
+        if (spec) {
+            setPlayerSpec(false);
             MLGRush.getInstance().getGameUtils().getBuildMode().remove(player);
             MLGRush.getInstance().getGameUtils().getSpecList().add(player);
             player.setGameMode(GameMode.CREATIVE);
             player.getInventory().clear();
-            forEachReloadSpec();
+            removeFormPlayersScoreboard();
+            setScoreboard();
+            return;
+        }
+        MLGRush.getInstance().getGameUtils().getSpecList().remove(player);
+        player.setGameMode(GameMode.SURVIVAL);
+        player.getInventory().clear();
+        setScoreboard();
+    }
+
+    public void setSpec(boolean spec) {
+        if (spec) {
+            setPlayerSpec(false);
+            MLGRush.getInstance().getGameUtils().getBuildMode().remove(player);
+            MLGRush.getInstance().getGameUtils().getSpecList().add(player);
+            player.setGameMode(GameMode.CREATIVE);
+            player.getInventory().clear();
             removeFormPlayersScoreboard();
             setScoreboard();
             return;
@@ -120,29 +135,13 @@ public class RushPlayer {
         player.setGameMode(GameMode.SURVIVAL);
         player.getInventory().clear();
         setLobbyItems();
-        forEachReloadSpec();
         teleport(Locations.SPAWN);
         setScoreboard();
     }
 
-    public void forEachReloadSpec() {
-        Bukkit.getOnlinePlayers().forEach(all -> {
-            setSpecReload(all);
-        });
-    }
-
-    public void setSpecReload(Player player) {
-        Bukkit.getOnlinePlayers().forEach(all -> {
-            if(MLGRush.getInstance().getGameUtils().getSpecList().contains(all)) {
-                player.hidePlayer(all);
-            } else {
-                player.showPlayer(all);
-            }
-        });
-    }
 
     public void setBuildMode(boolean build) {
-        if(build) {
+        if (build) {
             player.setGameMode(GameMode.CREATIVE);
             player.getInventory().clear();
             player.setLevel(0);
@@ -151,7 +150,6 @@ public class RushPlayer {
             MLGRush.getInstance().getGameUtils().getBuildMode().add(player);
             removeFormPlayersScoreboard();
             setScoreboard();
-            forEachReloadSpec();
             return;
         }
         player.getInventory().clear();
@@ -166,32 +164,6 @@ public class RushPlayer {
     public void add(String type) {
         SQLStats sqlStats = new SQLStats(player.getName());
         sqlStats.add(type);
-    }
-
-    public void reloadVisibility(Player visibility) {
-        RushPlayer v  = new RushPlayer(visibility);
-        if(v.isLobby()) {
-            Bukkit.getOnlinePlayers().forEach(all -> {
-                RushPlayer current = RushPlayer.getPlayer(all);
-                if(current.isSpec()) {
-                    visibility.hidePlayer(all);
-                }
-                if(current.isLobby()) {
-                    visibility.showPlayer(all);
-                } else {
-                    visibility.hidePlayer(all);
-                }
-            });
-        }
-        if(v.isIngame()) {
-            Bukkit.getOnlinePlayers().forEach(all -> {
-                if(all == MLGRush.getInstance().getMlgrushUtils().getMatch().get(visibility)) {
-                    visibility.showPlayer(all);
-                } else {
-                    visibility.hidePlayer(all);
-                }
-            });
-        }
     }
 
     public void setMap(String map) {
@@ -215,30 +187,22 @@ public class RushPlayer {
         return MLGRush.getInstance().getGameUtils().getTeamList().get(player).toLowerCase();
     }
 
+    public void hidePlayer(Player player) {
+        Bukkit.getOnlinePlayers().forEach(all -> {
+            if (!MLGRush.getInstance().getGameUtils().getPlayerSpecList().containsKey(player)) {
+                if (MLGRush.getInstance().getGameUtils().getPlayerSpecList().containsKey(all) || MLGRush.getInstance().getGameUtils().getSpecList().contains(all)) {
+                    player.hidePlayer(all);
+                } else {
+                    player.showPlayer(all);
+                }
+            } else {
+                player.showPlayer(all);
+            }
+        });
+    }
+
     public enum Teams {
         ROT, BLAU
-    }
-
-    boolean ic;
-
-    public void sendActionbar() {
-        ic = true;
-        if (ic)
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(MLGRush.getInstance(), () -> {
-                if (isIngame()) {
-                    sendAc("§8» §eGegner §8➟§c " + MLGRush.getInstance().getGameUtils().getPoints().get(MLGRush.getInstance().getMlgrushUtils().getMatch().get(player))
-                            + " §8×§e Du §8➟§9 " + MLGRush.getInstance().getGameUtils().getPoints().get(player) + " §8«");
-                } else {
-                    ic = false;
-                }
-            }, 20, 20L);
-    }
-
-    public void sendAc(String message) {
-        IChatBaseComponent iChatBaseComponent = IChatBaseComponent.ChatSerializer
-                .a("{\"text\": \"" + ChatColor.translateAlternateColorCodes('&', message) + "\"}");
-        PacketPlayOutChat packet = new PacketPlayOutChat(iChatBaseComponent, (byte) 2);
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
 
     public boolean isIngame() {
@@ -300,11 +264,47 @@ public class RushPlayer {
         inventory.setItem(0, new ItemBuilder(Material.DIAMOND_SWORD)
                 .setDisplayName(MLGRush.getInstance().getStringUtils().getItemNames().get("sword"))
                 .build());
-        inventory.setItem(4, new ItemBuilder(Material.CHEST)
+        inventory.setItem(2, new ItemBuilder(Material.COMPASS)
+                .setDisplayName(MLGRush.getInstance().getStringUtils().getItemNames().get("spec"))
+                .build());
+        inventory.setItem(6, new ItemBuilder(Material.CHEST)
                 .setDisplayName(MLGRush.getInstance().getStringUtils().getItemNames().get("settings"))
                 .build());
         inventory.setItem(8, SkullBuilder.getUrlSkull("8652e2b936ca8026bd28651d7c9f2819d2e923697734d18dfdb13550f8fdad5f")
                 .setDisplayName(MLGRush.getInstance().getStringUtils().getItemNames().get("leave"))
+                .build());
+    }
+
+    public void setPlayerSpec(boolean bool) {
+        if (bool) {
+            setSpec(false, false);
+            setLobby(false);
+            player.getInventory().clear();
+            player.closeInventory();
+            player.setAllowFlight(true);
+            setSpecItems();
+            MLGRush.getInstance().getMlgrushUtils().getRequests().remove(this.getPlayer());
+            MLGRush.getInstance().getMlgrushUtils().getMatch().remove(this.getPlayer());
+            MLGRush.getInstance().getMlgrushUtils().getMatching().remove(this.getPlayer());
+            MLGRush.getInstance().getMlgrushUtils().getMapList().remove(this.getPlayer());
+            MLGRush.getInstance().getMlgrushUtils().getInMatching().remove(this.getPlayer());
+            MLGRush.getInstance().getMlgrushUtils().getQueueList().remove(this.getPlayer());
+            setScoreboard();
+        } else {
+            MLGRush.getInstance().getGameUtils().getPlayerSpecList().remove(player);
+            player.setAllowFlight(false);
+            setLobby(true);
+            setLobbyItems();
+        }
+    }
+
+    public boolean isPlayerSpec() {
+        return MLGRush.getInstance().getGameUtils().getPlayerSpecList().containsKey(player);
+    }
+
+    public void setSpecItems() {
+        player.getInventory().setItem(4, new ItemBuilder(Material.MAGMA_CREAM)
+                .setDisplayName(MLGRush.getInstance().getStringUtils().getItemNames().get("leavespec"))
                 .build());
     }
 

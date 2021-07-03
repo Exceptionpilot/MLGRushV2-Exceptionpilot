@@ -32,20 +32,6 @@ public class ScoreboardManager {
             bPlayerBoard.set("§4", 0);
             return;
         }
-        if(rushPlayer.isSpec()) {
-            bPlayerBoard.getLines().clear();
-            bPlayerBoard.set("§1", 9);
-            bPlayerBoard.set("§7Spec", 8);
-            bPlayerBoard.set("§8● §1§aAktiviert!", 7);
-            bPlayerBoard.set("§2", 6);
-            bPlayerBoard.set("§7Shop", 5);
-            bPlayerBoard.set("§8● §1§2§eMyWars.eu", 4);
-            bPlayerBoard.set("§9", 3);
-            bPlayerBoard.set("§7Teamspeak", 2);
-            bPlayerBoard.set("§8● §eMyWars.eu", 1);
-            bPlayerBoard.set("§4", 0);
-            return;
-        }
         if(rushPlayer.isLobby()) {
             bPlayerBoard.getLines().clear();
             bPlayerBoard.set("§1", 9);
@@ -54,6 +40,34 @@ public class ScoreboardManager {
             bPlayerBoard.set("§2", 6);
             bPlayerBoard.set("§7Eingehend", 5);
             bPlayerBoard.set("§8● §2§e" + (MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) != null ? MLGRush.getInstance().getMlgrushUtils().getInMatching().get(rushPlayer.getPlayer()) : "§c✘"), 4);
+            bPlayerBoard.set("§9", 3);
+            bPlayerBoard.set("§7Teamspeak", 2);
+            bPlayerBoard.set("§8● §eMyWars.eu", 1);
+            bPlayerBoard.set("§4", 0);
+            return;
+        }
+        if(rushPlayer.isPlayerSpec()) {
+            bPlayerBoard.getLines().clear();
+            bPlayerBoard.set("§1", 9);
+            bPlayerBoard.set("§7Map", 8);
+            bPlayerBoard.set("§8● §1§b" + MLGRush.getInstance().getGameUtils().getPlayerSpecList().get(rushPlayer.getPlayer()), 7);
+            bPlayerBoard.set("§2", 6);
+            bPlayerBoard.set("§7Spectator", 5);
+            bPlayerBoard.set("§8● §aAktiviert!", 4);
+            bPlayerBoard.set("§9", 3);
+            bPlayerBoard.set("§7Teamspeak", 2);
+            bPlayerBoard.set("§8● §eMyWars.eu", 1);
+            bPlayerBoard.set("§4", 0);
+            return;
+        }
+        if(rushPlayer.isSpec()) {
+            bPlayerBoard.getLines().clear();
+            bPlayerBoard.set("§1", 9);
+            bPlayerBoard.set("§7Spec", 8);
+            bPlayerBoard.set("§8● §1§aAktiviert!", 7);
+            bPlayerBoard.set("§2", 6);
+            bPlayerBoard.set("§7Shop", 5);
+            bPlayerBoard.set("§8● §1§2§eMyWars.eu", 4);
             bPlayerBoard.set("§9", 3);
             bPlayerBoard.set("§7Teamspeak", 2);
             bPlayerBoard.set("§8● §eMyWars.eu", 1);

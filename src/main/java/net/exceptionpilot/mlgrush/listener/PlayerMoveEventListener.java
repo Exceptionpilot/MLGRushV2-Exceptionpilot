@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.Random;
+
 /**
  * @author Jonas | Exceptionpilot#5555
  * Created on 09.06.2021 «» 22:11
@@ -44,6 +46,17 @@ public class PlayerMoveEventListener implements Listener {
         if(rushPlayer.isLobby()) {
             if(event.getPlayer().getLocation().getY() <= 0) {
                 rushPlayer.teleport(Locations.SPAWN);
+            }
+        }
+        if(rushPlayer.isPlayerSpec()) {
+            if(event.getPlayer().getLocation().getY() <= 0) {
+                String map = MLGRush.getInstance().getGameUtils().getPlayerSpecList().get(rushPlayer.getPlayer());
+                int i = new Random().nextInt(2);
+                if(i == 1) {
+                    rushPlayer.getPlayer().teleport(MLGRush.getInstance().getMapLocations().getLocation("spawn." + "rot" + "." + map));
+                } else {
+                    rushPlayer.getPlayer().teleport(MLGRush.getInstance().getMapLocations().getLocation("spawn." + "blau" + "." + map));
+                }
             }
         }
     }

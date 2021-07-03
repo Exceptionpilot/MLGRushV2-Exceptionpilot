@@ -28,6 +28,10 @@ public class EntityDamageByEntityEventListener implements Listener {
         }
         if(event.getEntity() instanceof Player) {
             RushPlayer rushPlayer = RushPlayer.getPlayer((Player) event.getDamager());
+            if(rushPlayer.isPlayerSpec()) {
+                event.setCancelled(true);
+                return;
+            }
             if(rushPlayer.isLobby()) {
                 MLGRush.getInstance().getMlgrushUtils().handleSword((Player) event.getDamager(), ((Player) event.getEntity()).getPlayer());
                 event.setCancelled(true);

@@ -27,4 +27,5 @@ public class GameUtils {
     private ArrayList<Player> buildMode = new ArrayList<>();
     private ArrayList<Player> specList = new ArrayList<>();
     private HashMap<Player, Player> lastHitter = new HashMap<>();
+    private HashMap<Player, String> playerSpecList = new HashMap<>();
 }

@@ -26,6 +26,5 @@ public class PlayerJoinEventListener implements Listener {
         rushPlayer.teleport(Locations.SPAWN);
         rushPlayer.setLobbyItems();
         rushPlayer.setScoreboard();
-        rushPlayer.forEachReloadSpec();
     }
 }
