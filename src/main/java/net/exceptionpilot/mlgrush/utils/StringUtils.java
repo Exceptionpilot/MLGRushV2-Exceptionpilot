@@ -25,6 +25,9 @@ public class StringUtils {
         itemNames.put("leave", "§8» §9Verlassen");
         itemNames.put("spec", "§8» §aSpectate");
         itemNames.put("leavespec", "§a§8» §cVerlassen");
+        itemNames.put("items", "§a§8» §dItems");
+
+
 
         inventoryName.put("sort", "§8» §6Inventarsortierung");
         inventoryName.put("spec", "§8» §aSpectate");

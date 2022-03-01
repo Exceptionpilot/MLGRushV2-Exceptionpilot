@@ -267,6 +267,11 @@ public class RushPlayer {
         inventory.setItem(2, new ItemBuilder(Material.COMPASS)
                 .setDisplayName(MLGRush.getInstance().getStringUtils().getItemNames().get("spec"))
                 .build());
+
+        inventory.setItem(4, new ItemBuilder(Material.REDSTONE_COMPARATOR)
+                .setDisplayName(MLGRush.getInstance().getStringUtils().getItemNames().get("items"))
+                .build());
+
         inventory.setItem(6, new ItemBuilder(Material.CHEST)
                 .setDisplayName(MLGRush.getInstance().getStringUtils().getItemNames().get("settings"))
                 .build());
