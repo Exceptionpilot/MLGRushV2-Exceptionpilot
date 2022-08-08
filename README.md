@@ -2,3 +2,4 @@
 
 Es wurden folgende Libaries im Plugin genutzt:
 - BPlayerBoard
+- SkullBuilder
