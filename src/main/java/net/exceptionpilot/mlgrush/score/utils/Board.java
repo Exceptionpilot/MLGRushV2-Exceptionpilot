@@ -82,16 +82,6 @@ public class Board {
         return boards.get(player);
     }
 
-    /**
-     * Gets all the boards mapped to their player.
-     * This returns a copy of the current boards map,
-     * thus modifying the given Map will not have any effect on the boards.
-     *
-     * @return a new map with all the player boards
-     */
-    public Map<Player, BPlayerBoard> getBoards() {
-        return new HashMap<>(boards);
-    }
 
     /**
      * Returns the instance of the Netherboard class.
